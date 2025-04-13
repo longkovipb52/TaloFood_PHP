@@ -1,0 +1,6 @@
+{
+    "require": {
+        "paypal/paypal-server-sdk": "^1.0",
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

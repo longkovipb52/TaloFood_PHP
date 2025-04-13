@@ -1,0 +1,377 @@
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #E3B448;     /* Màu vàng mù tạt chính */
+    --primary-dark: #CBD081;      /* Màu vàng mù tạt đậm */
+    --primary-light: #F7E987;     /* Màu vàng mù tạt nhạt */
+    --text-color: #3A4D39;        /* Màu chữ chính */
+    --error-color: #FF6B6B;       /* Màu thông báo lỗi */
+    --success-color: #28a745;     /* Màu thông báo thành công */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    padding: 20px;
+}
+
+.container {
+    position: relative;
+    max-width: 470px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.container header {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.container form {
+    margin-top: 30px;
+}
+
+form .field {
+    margin-bottom: 20px;
+}
+
+form .input-field {
+    position: relative;
+    height: 55px;
+    width: 100%;
+}
+
+.input-field input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: 2px solid #e1e1e1;
+    border-radius: 12px;
+    padding: 0 15px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.input-field input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(227, 180, 72, 0.2);
+}
+
+.input-field label {
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    color: var(--text-color);
+    background: #fff;
+    padding: 0 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.input-field .error {
+    color: #ff3333;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+form button {
+    height: 55px;
+    width: 100%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(227, 180, 72, 0.3);
+}
+
+.form-link {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.form-link span,
+.form-link a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form-link a:hover {
+    text-decoration: underline;
+}
+
+.error-message,
+.success-message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+}
+
+.error-message {
+    background-color: #ffe6e6;
+    color: #ff3333;
+    border: 1px solid #ff9999;
+}
+
+.success-message {
+    background-color: #e6ffe6;
+    color: #009933;
+    border: 1px solid #99ff99;
+}
+
+.error-message.show,
+.success-message.show {
+    display: block;
+}
+
+/* Thêm style cho input khi có lỗi */
+.input-field input.error {
+    border-color: #ff3333;
+}
+
+/* Style cho thông báo lỗi dưới input */
+.input-field .error-message {
+    color: #ff3333;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    .container header {
+        font-size: 24px;
+    }
+
+    .input-field input,
+    form button {
+        height: 50px;
+    }
+}
+
+/* Thêm style cho popup message */
+.popup-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: none;
+    animation: slideIn 0.5s ease-out;
+}
+
+.popup-success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.popup-error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 150px; 
+    height: 150px; 
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container img {
+    max-width: 100%;    
+    height: auto;      
+    object-fit: contain; 
+    transition: transform 0.3s ease;
+}
+
+.logo-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Toast Notification */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    min-width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideInRight 0.5s ease forwards;
+    transition: all 0.3s ease;
+}
+
+.toast.hiding {
+    animation: slideOutRight 0.5s ease forwards;
+}
+
+.toast-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.toast-error {
+    border-left: 4px solid var(--error-color);
+}
+
+.toast-icon {
+    font-size: 24px;
+}
+
+.toast-success .toast-icon {
+    color: var(--success-color);
+}
+
+.toast-error .toast-icon {
+    color: var(--error-color);
+}
+
+.toast-content {
+    flex-grow: 1;
+}
+
+.toast-message {
+    color: #333;
+    font-size: 14px;
+    margin: 0;
+}
+
+.toast-close {
+    color: #999;
+    cursor: pointer;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.toast-close:hover {
+    color: #666;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Thêm animation rung cho toast error */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+.toast-error {
+    border-left: 4px solid var(--error-color);
+    animation: slideInRight 0.5s ease forwards, shake 0.5s ease 0.5s;
+}
+
+.toast-error .toast-icon {
+    color: var(--error-color);
+}
+
+/* Tùy chỉnh màu sắc cho toast error */
+.toast-error {
+    background-color: #fff5f5;
+}
+
+.toast-error .toast-message {
+    color: #dc3545;
+} 

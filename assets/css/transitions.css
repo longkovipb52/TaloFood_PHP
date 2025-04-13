@@ -1,0 +1,230 @@
+/* Base styles cho hiệu ứng chuyển trang */
+body {
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Loading Animation - Đơn giản hóa */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(13, 13, 13, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.page-loader.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Food-themed loader - Giữ nguyên */
+.food-loader {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    animation: plateRotate 3s infinite ease;
+}
+
+.food-loader::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--main-color);
+    box-shadow: 0 0 20px rgba(211, 173, 127, 0.5);
+}
+
+.food-loader::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border-radius: 50%;
+    background: #0d0d0d;
+    box-shadow: inset 0 0 10px rgba(211, 173, 127, 0.2);
+}
+
+.food-item {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.food-item:nth-child(1) {
+    top: 10%;
+    left: 50%;
+    background: #ff6347; /* tomato color */
+    transform: translate(-50%, 0);
+    animation: bounce 1.2s infinite 0.1s;
+}
+
+.food-item:nth-child(2) {
+    top: 50%;
+    left: 10%;
+    background: #7cfc00; /* lettuce color */
+    transform: translate(0, -50%);
+    animation: bounce 1.2s infinite 0.3s;
+}
+
+.food-item:nth-child(3) {
+    bottom: 10%;
+    left: 50%;
+    background: #f5deb3; /* bread color */
+    transform: translate(-50%, 0);
+    animation: bounce 1.2s infinite 0.5s;
+}
+
+.food-item:nth-child(4) {
+    top: 50%;
+    right: 10%;
+    background: #ffa500; /* cheese color */
+    transform: translate(0, -50%);
+    animation: bounce 1.2s infinite 0.7s;
+}
+
+/* Hover Effects cho Food Items - giữ nguyên */
+.menu-item, .food-card, .product-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform, box-shadow;
+}
+
+.menu-item.revealed, 
+.food-card.revealed, 
+.product-item.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.menu-item:hover, .food-card:hover, .product-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Special hover effect for food images */
+.food-image {
+    overflow: hidden;
+    position: relative;
+}
+
+.food-image img {
+    transition: transform 0.5s ease;
+}
+
+.food-image:hover img {
+    transform: scale(1.05);
+}
+
+.food-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(211, 173, 127, 0.2);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+
+.food-image:hover::before {
+    opacity: 1;
+}
+
+/* Button Hover Effects */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: transform 0.5s ease;
+    z-index: -1;
+    transform: skewX(-25deg);
+}
+
+.btn:hover::before {
+    transform: skewX(-25deg) translateX(200%);
+}
+
+/* Animations - Giữ nguyên */
+@keyframes plateRotate {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Hover effect animation */
+.hover-effect {
+    display: none;
+}
+
+/* Cải thiện hiệu ứng hover cho navbar */
+.navbar a {
+    position: relative;
+    transition: color 0.3s ease;
+    overflow: hidden;
+}
+
+/* Thay thế hiệu ứng JavaScript bằng CSS thuần */
+.navbar a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--main-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.navbar a:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.navbar a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(211, 173, 127, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 4px;
+    z-index: -1;
+}
+
+.navbar a:hover::after {
+    opacity: 1;
+}

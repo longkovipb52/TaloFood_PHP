@@ -1,0 +1,249 @@
+    /* Hero Section */
+    .about-hero {
+        height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/about-hero.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #fff;
+        padding: 0 2rem;
+    }
+
+    .about-hero-content h1 {
+        font-size: 5rem;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+    }
+
+    .about-hero-content p {
+        font-size: 2.2rem;
+        color: var(--main-color);
+    }
+
+    /* Container */
+    .container {
+        max-width: 120rem;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Section Styles */
+    section {
+        padding: 8rem 0;
+    }
+
+    .section-title {
+        font-size: 3.5rem;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 5rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10rem;
+        height: 0.3rem;
+        background: var(--main-color);
+    }
+
+    /* Our Story Section */
+    .our-story {
+        background: var(--black);
+    }
+
+    .story-content {
+        display: flex;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .story-image {
+        flex: 1;
+    }
+
+    .story-image img {
+        width: 100%;
+        border-radius: 1rem;
+        box-shadow: 0 0 2rem rgba(0,0,0,0.3);
+    }
+
+    .story-text {
+        flex: 1;
+    }
+
+    .story-text h3 {
+        font-size: 2.8rem;
+        color: var(--main-color);
+        margin-bottom: 2rem;
+    }
+
+    .story-text p {
+        font-size: 1.6rem;
+        color: #ccc;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Core Values Section */
+    .core-values {
+        background: var(--bg);
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+        gap: 3rem;
+    }
+
+    .value-card {
+        background: var(--black);
+        padding: 3rem 2rem;
+        text-align: center;
+        border-radius: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .value-card:hover {
+        transform: translateY(-1rem);
+    }
+
+    .value-card i {
+        font-size: 4rem;
+        color: var(--main-color);
+        margin-bottom: 2rem;
+    }
+
+    .value-card h3 {
+        font-size: 2.2rem;
+        color: #fff;
+        margin-bottom: 1.5rem;
+    }
+
+    .value-card p {
+        font-size: 1.6rem;
+        color: #ccc;
+        line-height: 1.6;
+    }
+
+    /* Team Section */
+    .team {
+        background: var(--black);
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+        gap: 3rem;
+    }
+
+    .team-member {
+        text-align: center;
+        background: var(--bg);
+        padding: 2rem;
+        border-radius: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .team-member:hover {
+        transform: translateY(-1rem);
+    }
+
+    .team-member img {
+        width: 20rem;
+        height: 20rem;
+        border-radius: 50%;
+        margin-bottom: 2rem;
+        object-fit: cover;
+        border: 0.3rem solid var(--main-color);
+    }
+
+    .team-member h3 {
+        font-size: 2.2rem;
+        color: #fff;
+        margin-bottom: 1rem;
+    }
+
+    .team-member p {
+        font-size: 1.6rem;
+        color: var(--main-color);
+    }
+
+    /* Achievements Section */
+    .achievements {
+        background: var(--bg);
+    }
+
+    .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+        gap: 3rem;
+    }
+
+    .achievement-card {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: var(--black);
+        border-radius: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .achievement-card:hover {
+        transform: translateY(-1rem);
+    }
+
+    .achievement-card .number {
+        font-size: 4rem;
+        color: var(--main-color);
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    .achievement-card p {
+        font-size: 1.8rem;
+        color: #fff;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .about-hero-content h1 {
+            font-size: 3.5rem;
+        }
+
+        .about-hero-content p {
+            font-size: 1.8rem;
+        }
+
+        .story-content {
+            flex-direction: column;
+        }
+
+        .story-image, .story-text {
+            flex: 1 1 100%;
+        }
+
+        .section-title {
+            font-size: 3rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .about-hero-content h1 {
+            font-size: 2.8rem;
+        }
+
+        .about-hero-content p {
+            font-size: 1.6rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+        }
+    } 

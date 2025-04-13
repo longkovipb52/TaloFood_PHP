@@ -1,0 +1,369 @@
+/* Reset styles cho trang checkout */
+body.checkout-page {
+    background: var(--bg);
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* Chỉ style cho phần checkout, không bao gồm header và footer */
+.checkout-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    margin-top: 100px;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* Form styles */
+.checkout-form {
+    background: var(--black);
+    padding: 2rem;
+    border-radius: 12px;
+    border: var(--border);
+}
+
+.checkout-form h1,
+.checkout-form h3 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    font-size: 2.4rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-row {
+    margin-bottom: 1.5rem;
+}
+
+.form-row label {
+    display: block;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: var(--border);
+    color: #fff;
+    font-size: 1.6rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--main-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(211, 173, 127, 0.2);
+}
+
+/* Payment method styles */
+.payment-methods {
+    margin-top: 2rem;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: var(--border);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.payment-method.selected,
+.payment-method:hover {
+    border-color: var(--main-color);
+    background: rgba(211, 173, 127, 0.1);
+}
+
+.payment-method img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.payment-method span {
+    font-size: 1.6rem;
+}
+
+/* CSS cho phương thức thanh toán không khả dụng */
+.payment-method.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.payment-disabled-msg {
+    font-size: 1.2rem;
+    color: #dc3545;
+    margin-top: 0.5rem;
+}
+
+/* Order summary styles */
+.order-summary {
+    background: var(--black);
+    padding: 2rem;
+    border-radius: 12px;
+    border: var(--border);
+    height: fit-content;
+}
+
+.order-summary h3 {
+    color: #fff;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.order-items {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.order-items::-webkit-scrollbar {
+    width: 6px;
+}
+
+.order-items::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.order-items::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+    border-radius: 3px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: var(--border);
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.item-info {
+    color: #fff;
+    font-size: 1.6rem;
+    flex: 1;
+}
+
+.item-info .name {
+    margin-bottom: 0.5rem;
+}
+
+.item-info .quantity {
+    color: #999;
+    font-size: 1.4rem;
+}
+
+.item-price {
+    color: var(--main-color);
+    font-size: 1.6rem;
+    white-space: nowrap;
+}
+
+/* Total section */
+.order-total {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: var(--border);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+}
+
+.total-row.final {
+    color: var(--main-color);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(211, 173, 127, 0.3);
+}
+
+/* Button styles */
+.checkout-btn {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--main-color);
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.checkout-btn:hover {
+    background: #c19b6a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(211, 173, 127, 0.3);
+}
+
+/* Error message */
+.error-message {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff3333;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    display: none;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.error-message.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Loading animation */
+.loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading.active {
+    display: flex;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #fff;
+    border-top: 4px solid var(--main-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Thêm vào CSS cho cảnh báo uy tín */
+.reputation-warning,
+.reputation-error {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+    color: #fff;
+}
+
+.reputation-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+}
+
+.reputation-error {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left: 4px solid #dc3545;
+}
+
+.reputation-warning i,
+.reputation-error i {
+    font-size: 2rem;
+    margin-right: 1.5rem;
+    margin-top: 0.2rem;
+}
+
+.reputation-warning i {
+    color: #ffc107;
+}
+
+.reputation-error i {
+    color: #dc3545;
+}
+
+.reputation-warning p,
+.reputation-error p {
+    margin: 0.5rem 0;
+    font-size: 1.4rem;
+}
+
+.reputation-plus {
+    color: #28a745;
+    margin-left: 0.5rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkout-container {
+        padding: 1rem;
+        margin-top: 80px;
+    }
+    
+    .order-summary {
+        margin-top: 2rem;
+    }
+    
+    .payment-method {
+        padding: 1rem;
+    }
+    
+    .payment-method img {
+        width: 30px;
+        height: 30px;
+    }
+}

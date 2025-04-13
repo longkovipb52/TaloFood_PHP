@@ -1,0 +1,257 @@
+/* CSS riêng cho phần menu trong trang home */
+
+/* Định nghĩa lại các biến để không bị xung đột */
+:root {
+    --main-color: #d3ad7f;
+    --black: #13131a;
+    --white: #fff;
+    --light-color: #aaa;
+    --border: 0.1rem solid rgba(255, 255, 255, 0.3);
+    --yellow: #ffc107;
+    --border-color-light: rgba(255, 255, 255, 0.1);
+}
+
+/* Cấu trúc grid cho menu và sản phẩm bán chạy */
+.menu .box-container,
+.products .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Tiêu đề danh mục */
+.category-title {
+    font-size: 2.5rem;
+    margin: 2rem 0;
+    color: var(--white);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+/* Menu Item Styling */
+.menu-item {
+    background: var(--black);
+    border: var(--border);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(211, 173, 127, 0.15);
+    border-color: rgba(211, 173, 127, 0.5);
+}
+
+/* Item Image */
+.item-image {
+    position: relative;
+    height: 20rem;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.menu-item:hover .item-image img {
+    transform: scale(1.05);
+}
+
+/* Item Overlay */
+.item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.menu-item:hover .item-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.item-overlay button {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: var(--main-color);
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover .item-overlay button {
+    transform: translateY(0);
+}
+
+.item-overlay button:hover {
+    background: #fff;
+    color: var(--main-color);
+}
+
+.quick-view-btn {
+    transition-delay: 0.1s;
+}
+
+.add-to-cart-btn {
+    transition-delay: 0.2s;
+}
+
+/* Item Info */
+.item-info {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-category {
+    display: inline-block;
+    font-size: 1.2rem;
+    color: var(--main-color);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: rgba(211, 173, 127, 0.1);
+    padding: 0.3rem 1rem;
+    border-radius: 2rem;
+}
+
+.item-info h3 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-item:hover .item-info h3 {
+    color: var(--main-color);
+}
+
+/* Item Rating */
+.item-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.item-rating i {
+    color: var(--main-color);
+    font-size: 1.5rem;
+    margin-right: 0.3rem;
+}
+
+.item-rating span {
+    color: var(--light-color);
+    font-size: 1.4rem;
+    margin-left: 0.5rem;
+}
+
+/* Item Price */
+.item-price {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.new-price {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--main-color);
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: var(--light-color);
+    font-size: 1.5rem;
+}
+
+.discount-badge {
+    background-color: #e74c3c;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Item Description */
+.item-description {
+    font-size: 1.4rem;
+    color: var(--light-color);
+    line-height: 1.6;
+    margin-top: auto;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Sold Badge */
+.sold-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    z-index: 1;
+    border: 1px solid rgba(211, 173, 127, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu .box-container,
+    .products .box-container {
+        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    }
+    
+    .item-image {
+        height: 18rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-image {
+        height: 16rem;
+    }
+    
+    .item-info h3 {
+        font-size: 1.8rem;
+    }
+}
