@@ -18,10 +18,8 @@ try {
     $stmt->execute();
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Lọc theo danh mục nếu có
     $category_filter = isset($_GET['category']) ? (int)$_GET['category'] : 0;
     
-    // Lấy từ khóa tìm kiếm nếu có
     $search_term = isset($_GET['search']) ? trim($_GET['search']) : '';
     
     // Xây dựng câu truy vấn SQL

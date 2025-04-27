@@ -11,8 +11,6 @@ class Mailer {
     public function __construct() {
         try {
             $this->mail = new PHPMailer(true);
-            
-            // Tắt debug output trong production
             $this->mail->SMTPDebug = 0;
             
             // Cấu hình SMTP

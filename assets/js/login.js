@@ -86,4 +86,111 @@ const urlParams = new URLSearchParams(window.location.search);
 const successMessage = urlParams.get('success_message');
 if (successMessage) {
     showPopupMessage(decodeURIComponent(successMessage));
-} 
+}
+
+// Xử lý hiển thị form yêu cầu mở khóa khi tài khoản bị khóa
+function showUnlockRequestButton(username) {
+    // Tạo nút yêu cầu mở khóa nếu chưa có
+    if (!$('#requestUnlockBtn').length) {
+        const unlockBtn = $('<button id="requestUnlockBtn" class="unlock-request-btn">Yêu cầu mở khóa tài khoản</button>');
+        $('#loginForm').after(unlockBtn);
+        
+        // Gắn sự kiện click cho nút
+        unlockBtn.click(function() {
+            $('#unlockUsername').val(username);
+            $('#unlockRequestModal').css('display', 'block');
+        });
+    }
+}
+
+// Xử lý đóng modal
+$(document).on('click', '.close-modal', function() {
+    $('#unlockRequestModal').css('display', 'none');
+});
+
+// Khi click bên ngoài modal thì đóng modal
+$(window).click(function(event) {
+    if (event.target == document.getElementById('unlockRequestModal')) {
+        $('#unlockRequestModal').css('display', 'none');
+    }
+});
+
+// Xử lý form yêu cầu mở khóa
+$('#unlockRequestForm').submit(function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        username: $('#unlockUsername').val(),
+        email: $('#unlockEmail').val(),
+        reason: $('#unlockReason').val() || 'Không có lý do cụ thể'
+    };
+    
+    // Hiển thị loading
+    const submitBtn = $('.unlock-submit-btn');
+    const originalText = submitBtn.text();
+    submitBtn.text('Đang gửi...').prop('disabled', true);
+    
+    $.ajax({
+        url: 'ajax/request_unlock.php',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            try {
+                const data = JSON.parse(response);
+                if (data.success) {
+                    Toast.success(data.message);
+                    $('#unlockRequestModal').css('display', 'none');
+                    
+                    // Thay đổi nút yêu cầu mở khóa thành thông báo đã gửi
+                    $('#requestUnlockBtn').text('Đã gửi yêu cầu mở khóa! Vui lòng kiểm tra email của bạn').prop('disabled', true)
+                        .css('background-color', '#28a745');
+                } else {
+                    Toast.error(data.message);
+                }
+            } catch (error) {
+                Toast.error('Có lỗi xảy ra khi gửi yêu cầu!');
+            }
+            submitBtn.text(originalText).prop('disabled', false);
+        },
+        error: function() {
+            Toast.error('Không thể kết nối đến máy chủ!');
+            submitBtn.text(originalText).prop('disabled', false);
+        }
+    });
+});
+
+// Sửa đổi phần xử lý đăng nhập để hiển thị nút yêu cầu mở khóa khi tài khoản bị khóa
+$('#loginForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    var formData = {
+        username: $('#username').val(),
+        password: $('#password').val()
+    };
+    
+    $.ajax({
+        url: 'ajax/login.php',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            try {
+                const data = JSON.parse(response);
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    Toast.error(data.message || 'Tài khoản hoặc mật khẩu không chính xác!');
+                    
+                    // Nếu tài khoản bị khóa, hiển thị nút yêu cầu mở khóa
+                    if (data.locked) {
+                        showUnlockRequestButton(data.username);
+                    }
+                }
+            } catch (error) {
+                Toast.error('Tài khoản hoặc mật khẩu không chính xác!');
+            }
+        },
+        error: function() {
+            Toast.error('Có lỗi xảy ra khi đăng nhập!');
+        }
+    });
+});

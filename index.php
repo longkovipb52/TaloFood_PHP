@@ -14,7 +14,7 @@ try {
 		ORDER BY c.foodcategory_id
 	");
 	$stmt->execute();
-	$result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Thay thế get_result()
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	foreach ($result as $category) {
 		$foodStmt = $conn->prepare("
@@ -26,8 +26,8 @@ try {
 			WHERE f.id_category = ? AND f.status = 1
 			LIMIT 4
 		");
-		$foodStmt->execute([$category['foodcategory_id']]); // Thay thế bind_param
-		$foods = $foodStmt->fetchAll(PDO::FETCH_ASSOC); // Thay thế get_result()
+		$foodStmt->execute([$category['foodcategory_id']]); 
+		$foods = $foodStmt->fetchAll(PDO::FETCH_ASSOC); 
 		
 		if (count($foods) > 0) {
 			$category['foods'] = $foods;
@@ -84,7 +84,7 @@ try {
 	<link rel="stylesheet" href="assets/css/home.css">
 	<link rel="stylesheet" href="assets/css/footer.css">
 	<link rel="stylesheet" href="assets/css/modal_detailfood.css">
-	<link rel="stylesheet" href="assets/css/home-menu.css"> <!-- File này đặt cuối cùng để ghi đè các style khác -->
+	<link rel="stylesheet" href="assets/css/home-menu.css"> 
 </head>
 
 <body>
@@ -293,8 +293,8 @@ try {
 		<div class="modal-content">
 			<span class="close">&times;</span>
 			<div id="quick-view-content">
-				<!-- Nội dung chi tiết sản phẩm sẽ được load bằng AJAX -->
-			</div>
+
+		</div>
 		</div>
 	</div>
 

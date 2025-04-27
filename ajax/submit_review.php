@@ -23,7 +23,7 @@ if (!isset($_POST['food_id']) || !isset($_POST['star_rating']) || !isset($_POST[
 }
 
 $food_id = (int)$_POST['food_id'];
-$rating = (int)$_POST['star_rating']; // Thay vì $_POST['rating']
+$rating = (int)$_POST['star_rating']; 
 $comment = trim($_POST['comment']);
 $action = $_POST['action'] ?? 'add';
 

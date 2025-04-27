@@ -30,6 +30,83 @@
         .input-field input[type="password"] {
             padding-right: 45px;
         }
+
+        /* CSS cho modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {transform: translateY(-50px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        .alert-message {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
+        }
+
+        #unlockReason {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .unlock-submit-btn {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        /* Thêm button để hiển thị khi tài khoản bị khóa */
+        .unlock-request-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .unlock-request-btn:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +144,35 @@
         </div>
     </div>
 
+    <!-- Modal Yêu Cầu Mở Khóa -->
+    <div class="modal" id="unlockRequestModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Yêu cầu mở khóa tài khoản</h3>
+            <p class="alert-message">Tài khoản của bạn đã bị khóa do đăng nhập sai nhiều lần. Vui lòng gửi yêu cầu mở khóa đến quản trị viên.</p>
+            
+            <form id="unlockRequestForm">
+                <input type="hidden" id="unlockUsername" name="username">
+                
+                <div class="field">
+                    <div class="input-field">
+                        <label for="unlockEmail">Email liên hệ</label>
+                        <input type="email" id="unlockEmail" name="email" placeholder="Nhập email để nhận phản hồi" required>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="input-field">
+                        <label for="unlockReason">Lý do yêu cầu mở khóa</label>
+                        <textarea id="unlockReason" name="reason" rows="3" placeholder="Giải thích lý do tài khoản bị khóa và tại sao bạn muốn mở khóa"></textarea>
+                    </div>
+                </div>
+                
+                <button type="submit" class="unlock-submit-btn">Gửi yêu cầu mở khóa</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -97,37 +203,8 @@
                 $(this).removeClass('fa-eye').addClass('fa-eye-slash');
             }
         });
-
-        $('#loginForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            var formData = {
-                username: $('#username').val(),
-                password: $('#password').val()
-            };
-            
-            $.ajax({
-                url: 'ajax/login.php',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    try {
-                        const data = JSON.parse(response);
-                        if (data.success) {
-                            window.location.href = data.redirect;
-                        } else {
-                            Toast.error(data.message || 'Tài khoản hoặc mật khẩu không chính xác!');
-                        }
-                    } catch (error) {
-                        Toast.error('Tài khoản hoặc mật khẩu không chính xác!');
-                    }
-                },
-                error: function() {
-                    Toast.error('Có lỗi xảy ra khi đăng nhập!');
-                }
-            });
-        });
     });
     </script>
+    <script src="assets/js/login.js"></script>
 </body>
 </html>

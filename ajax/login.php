@@ -38,7 +38,9 @@ try {
         if ($user['status'] == 0) {
             echo json_encode([
                 'success' => false,
-                'message' => 'Tài khoản đã bị khóa!'
+                'message' => 'Tài khoản đã bị khóa!',
+                'locked' => true, // Thêm cờ xác định tài khoản bị khóa
+                'username' => $user['username'] // Trả về username để sử dụng cho form
             ]);
             exit;
         }
@@ -79,8 +81,11 @@ try {
                 
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Tài khoản đã bị khóa do đăng nhập sai nhiều lần!'
+                    'message' => 'Tài khoản đã bị khóa do đăng nhập sai nhiều lần!',
+                    'locked' => true,
+                    'username' => $user['username']
                 ]);
+                exit;
             } else {
                 $stmt = $conn->prepare("UPDATE Account SET login_attempts = ?, locked_until = ? WHERE account_id = ?");
                 $stmt->execute([$login_attempts, $locked_until, $user['account_id']]);
@@ -102,4 +107,4 @@ try {
         'success' => false,
         'message' => 'Lỗi: ' . $e->getMessage()
     ]);
-} 
+}
