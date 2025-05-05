@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Với điểm uy tín hiện tại, bạn cần thanh toán trước khi đặt hàng.");
         }
 
-        // Lấy dữ liệu từ form
+        // Bổ sung phần lấy dữ liệu từ form
         $fullname = $_POST['fullname'] ?? '';
         $phone = $_POST['phone'] ?? '';
         $address = $_POST['address'] ?? '';
@@ -85,8 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $delivery_date = date('Y-m-d', strtotime('+0 days'));
 
         // Thêm đơn hàng vào bảng bill
-        $stmt = $db->prepare("INSERT INTO bill (ngaydat, ngaygiao, id_account, status, address, total_amount, payment_method, phone) 
-                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO bill (ngaydat, ngaygiao, id_account, status, address, total_amount, payment_method, phone, name) 
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $result = $stmt->execute([
             $order_date,
             $delivery_date,
@@ -95,7 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $address,
             $total_amount,
             $payment_method,
-            $phone
+            $phone,
+            $fullname // Thêm tên người nhận
         ]);
 
         if (!$result) {
@@ -242,9 +243,10 @@ foreach ($_SESSION['cart'] as $food_id => $cart_item) {
                     <div class="form-group">
                         <h3>Thông tin giao hàng</h3>
                         <div class="form-row">
-                            <label for="fullname">Họ và tên</label>
+                            <label for="fullname">Họ và tên người nhận</label>
                             <input type="text" id="fullname" name="fullname" class="form-control" 
                                    value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>" required>
+                            <small class="form-text text-muted">Có thể thay đổi nếu bạn gửi đến người khác</small>
                         </div>
                         <div class="form-row">
                             <label for="phone">Số điện thoại</label>

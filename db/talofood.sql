@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3307
--- Thời gian đã tạo: Th4 13, 2025 lúc 10:03 AM
+-- Thời gian đã tạo: Th5 04, 2025 lúc 05:51 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -47,10 +47,9 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_id`, `username`, `password`, `email`, `phone`, `id_role`, `address`, `status`, `login_attempts`, `locked_until`, `profile_image`, `reputation_points`) VALUES
-(1, 'admin', '$2y$10$gGivE.efOVynsfpS/kcT1Of9EPBSwzUM514afhnThLLUmRbvN6Ws6', 'admin@gmail.com', '0000000000', 1, 'TaLoFood Restaurant', 1, 0, NULL, NULL, 100),
+(1, 'admin', '$2y$10$gGivE.efOVynsfpS/kcT1Of9EPBSwzUM514afhnThLLUmRbvN6Ws6', 'addmin3939@gmail.com', '0000000000', 1, 'TaLoFood Restaurant', 1, 0, NULL, NULL, 100),
 (4, 'longkovipb52', '$2y$10$SwSWmI3lkJSntFrS8bT8m.7YxWG53m.FXtTELIEhXXTAizpfYVBbm', 'longpro03@gmail.com', '0367547809', 2, 'Duc Phong, Bu Dang, Binh Phuoc', 1, 0, NULL, '67f249862d306.jpg', 20),
-(8, 'longpro03', '$2y$10$H1XjbDmJm4jK356E6N/uKuO/Cj7uxbAHDcpoH9QXTKFW41o8wCkYW', 'longkovipb52@gmail.com', '0367547809', 2, 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 1, 0, NULL, '67fb448aaacde.jpg', 70),
-(30, 'longkovip357', '$2y$10$Bfb7q/jWUZPvq030mskvbOAEqizfl6N1EZkTJSlK2KDYSXHtNc2SO', 'longkovip357@gmail.com', '0867197692', 2, 'Bu Dang, Binh Phuoc', 1, 0, NULL, '67fa6e6c82668.png', 90);
+(8, 'longpro03', '$2y$10$43gPTLZN8z8FOcZB8Bj0C.yPBU/HUL4X1QwaN23YgrVtfz/RCYqj.', 'longkovipb52@gmail.com', '0367547809', 2, 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 1, 0, NULL, '67fb448aaacde.jpg', 90);
 
 -- --------------------------------------------------------
 
@@ -68,101 +67,105 @@ CREATE TABLE `bill` (
   `total_amount` decimal(10,2) DEFAULT 0.00,
   `payment_method` varchar(50) DEFAULT 'COD',
   `created_at` datetime DEFAULT current_timestamp(),
-  `phone` varchar(50) NOT NULL
+  `phone` varchar(50) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `bill`
 --
 
-INSERT INTO `bill` (`bill_id`, `ngaydat`, `ngaygiao`, `id_account`, `status`, `address`, `total_amount`, `payment_method`, `created_at`, `phone`) VALUES
-(1, '2025-03-15', '2025-03-16', 4, 'Đã giao', '123 Đường ABC, TP. HCM', 250000.00, 'COD', '2025-03-21 12:44:34', ''),
-(2, '2025-03-16', '2025-03-18', 8, 'Đã giao', '456 Đường XYZ, Hà Nội', 180000.00, 'Chuyển khoản', '2025-03-21 12:44:34', ''),
-(3, '2025-03-17', '2025-03-19', 4, 'Đã giao', '789 Đường DEF, Đà Nẵng', 320000.00, 'COD', '2025-03-21 12:44:34', ''),
-(4, '2025-02-10', '2025-02-11', 4, 'Đã giao', '12 Nguyễn Trãi, Hà Nội', 300000.00, 'Chuyển khoản', '2025-03-21 12:48:04', ''),
-(5, '2025-02-12', '2025-02-13', 8, 'Đã hủy', '45 Lê Lợi, TP. HCM', 275000.00, 'COD', '2025-03-21 12:48:04', ''),
-(6, '2025-02-14', '2025-02-15', 4, 'Đã giao', '78 Hoàng Văn Thụ, Đà Nẵng', 220000.00, 'Momo', '2025-03-21 12:48:04', ''),
-(7, '2025-02-16', '2025-02-18', 8, 'Đã hủy', '90 Trần Hưng Đạo, Hải Phòng', 350000.00, 'Chuyển khoản', '2025-03-21 12:48:04', ''),
-(8, '2025-03-19', '2025-03-20', 4, 'Đã giao', 'Bu Dang, Binh Phuoc', 120000.00, 'COD', '2025-03-24 11:20:00', ''),
-(9, '2025-03-19', '2025-03-20', 8, 'Đã giao', 'Duc Hoa, Binh Phuoc', 90000.00, 'Momo', '2025-03-24 11:20:00', ''),
-(10, '2025-03-20', '2025-03-21', 4, 'Đã giao', 'Bu Dang, Binh Phuoc', 75000.00, 'Momo', '2025-03-24 11:20:00', ''),
-(17, '2025-04-02', '2025-04-04', 8, 'Đã hủy', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 140000.00, 'cod', '2025-04-02 13:34:46', ''),
-(18, '2025-04-02', '2025-04-04', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 105000.00, 'cod', '2025-04-02 13:53:04', ''),
-(19, '2025-04-02', '2025-04-04', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 105000.00, 'paypal', '2025-04-02 14:25:10', ''),
-(20, '2025-04-02', '2025-04-04', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 105000.00, 'paypal', '2025-04-02 14:34:02', ''),
-(21, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 138000.00, 'cod', '2025-04-02 17:29:07', '0367547809'),
-(22, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 90000.00, 'cod', '2025-04-02 17:31:00', '0367547809'),
-(23, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 90000.00, 'cod', '2025-04-02 17:35:08', '0367547809'),
-(24, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', '\r\nBình Dương', 90000.00, 'cod', '2025-04-02 17:40:38', '0367547809'),
-(25, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', '\r\nBình Dương', 90000.00, 'cod', '2025-04-02 17:44:16', '0367547809'),
-(26, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', '\r\nBình Dương', 138000.00, 'COD', '2025-04-02 17:49:33', '0367547809'),
-(27, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 63000.00, 'COD', '2025-04-02 17:50:36', '0367547809'),
-(28, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 255000.00, 'COD', '2025-04-02 17:53:57', '0367547809'),
-(29, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 255000.00, 'COD', '2025-04-02 17:56:35', '0367547809'),
-(30, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 485000.00, 'COD', '2025-04-02 18:00:23', '0367547809'),
-(31, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 691000.00, 'COD', '2025-04-02 18:04:48', '0367547809'),
-(32, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 669000.00, 'COD', '2025-04-02 18:07:42', '0367547809'),
-(33, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 390000.00, 'COD', '2025-04-02 18:08:45', '0367547809'),
-(34, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 669000.00, 'COD', '2025-04-02 18:10:34', '0367547809'),
-(35, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 765000.00, 'COD', '2025-04-02 18:11:52', '0367547809'),
-(36, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 158000.00, 'cod', '2025-04-02 18:14:37', '0367547809'),
-(37, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 235000.00, 'cod', '2025-04-02 18:16:01', '0367547809'),
-(38, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 165000.00, 'cod', '2025-04-02 18:24:09', '0367547809'),
-(39, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-02 18:33:04', '0367547809'),
-(40, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-02 18:37:04', '0367547809'),
-(41, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-02 18:44:38', '0367547809'),
-(42, '2025-04-02', '2025-04-05', 8, 'Đã xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 84000.00, 'cod', '2025-04-02 19:25:16', '0367547809'),
-(43, '2025-04-02', '2025-04-05', 8, 'Đã xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 230000.00, 'cod', '2025-04-02 19:36:45', '0367547809'),
-(44, '2025-04-02', '2025-04-05', 4, 'Đã hủy', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 390000.00, 'cod', '2025-04-02 20:51:30', '0367547809'),
-(45, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 240000.00, 'cod', '2025-04-03 11:42:26', '0367547809'),
-(46, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 1140000.00, 'cod', '2025-04-03 11:47:47', '0367547809'),
-(47, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 355000.00, 'paypal', '2025-04-03 12:24:08', '0367547809'),
-(48, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc\r\nDuc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 158000.00, 'paypal', '2025-04-03 12:28:56', '0367547809'),
-(49, '2025-04-03', '2025-04-06', 4, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:31:38', '0367547809'),
-(50, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:35:23', '0367547809'),
-(51, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:36:05', '0367547809'),
-(52, '2025-04-03', '2025-04-06', 4, 'Đã hủy', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:43:59', '0367547809'),
-(53, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:00:02', '0367547809'),
-(54, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-03 13:01:30', '0367547809'),
-(55, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 83000.00, 'paypal', '2025-04-03 13:01:48', '0367547809'),
-(56, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:11:30', '0367547809'),
-(57, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:14:29', '0367547809'),
-(58, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 83000.00, 'paypal', '2025-04-03 13:15:26', '0367547809'),
-(59, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 83000.00, 'paypal', '2025-04-03 13:33:28', '0367547809'),
-(60, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 63000.00, 'paypal', '2025-04-03 13:38:20', '0367547809'),
-(61, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:38:37', '0367547809'),
-(62, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 63000.00, 'paypal', '2025-04-03 13:40:10', '0367547809'),
-(63, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 48000.00, 'paypal', '2025-04-03 13:42:10', '0367547809'),
-(64, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 48000.00, 'paypal', '2025-04-03 13:42:37', '0367547809'),
-(65, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 48000.00, 'paypal', '2025-04-03 13:44:23', '0367547809'),
-(66, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 190000.00, 'paypal', '2025-04-03 13:48:15', '0367547809'),
-(67, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 190000.00, 'paypal', '2025-04-03 13:48:52', '0367547809'),
-(68, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 190000.00, 'paypal', '2025-04-03 13:52:04', '0367547809'),
-(69, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 340000.00, 'paypal', '2025-04-03 13:55:43', '0367547809'),
-(70, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 680000.00, 'paypal', '2025-04-03 13:57:00', '0367547809'),
-(71, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc, Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 200000.00, 'cod', '2025-04-03 14:02:56', '0367547809'),
-(72, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 272000.00, 'paypal', '2025-04-03 14:07:46', '0367547809'),
-(73, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 450000.00, 'paypal', '2025-04-03 14:09:44', '0367547809'),
-(74, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 225000.00, 'paypal', '2025-04-03 14:12:35', '0367547809'),
-(75, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 300000.00, 'paypal', '2025-04-03 14:16:31', '0367547809'),
-(76, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 150000.00, 'paypal', '2025-04-03 14:19:24', '0367547809'),
-(77, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 75000.00, 'cod', '2025-04-03 14:42:36', '0367547809'),
-(78, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 150000.00, 'cod', '2025-04-03 15:25:20', '0367547809'),
-(79, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 300000.00, 'paypal', '2025-04-03 15:32:13', '0367547809'),
-(80, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 313000.00, 'cod', '2025-04-03 15:42:51', '0367547809'),
-(81, '2025-04-05', '2025-04-08', 4, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 450000.00, 'paypal', '2025-04-05 15:26:42', '0367547809'),
-(82, '2025-04-05', '2025-04-08', 8, 'Đã giao', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 75000.00, 'cod', '2025-04-05 17:40:10', '0367547809'),
-(83, '2025-04-05', '2025-04-08', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 150000.00, 'paypal', '2025-04-05 17:51:34', '0367547809'),
-(84, '2025-04-06', '2025-04-09', 4, 'Đã thanh toán', 'Duc Phong, Bu Dang, Binh Phuoc', 75000.00, 'paypal', '2025-04-06 16:32:11', '0367547809'),
-(85, '2025-04-07', '2025-04-10', 8, 'Đã xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 375000.00, 'cod', '2025-04-07 13:57:27', '0367547809'),
-(86, '2025-04-07', '2025-04-07', 8, 'Đã thanh toán', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 750000.00, 'paypal', '2025-04-07 14:01:34', '0367547809'),
-(88, '2025-04-11', '2025-04-11', 4, 'Đã hủy', 'Duc Phong, Bu Dang, Binh Phuoc', 798000.00, 'cod', '2025-04-11 13:34:51', '0367547809'),
-(89, '2025-04-11', '2025-04-11', 4, 'Đã thanh toán', 'Duc Phong, Bu Dang, Binh Phuoc', 1107000.00, 'paypal', '2025-04-11 14:48:36', '0367547809'),
-(90, '2025-04-11', '2025-04-11', 8, 'Đã hủy', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 300000.00, 'cod', '2025-04-11 16:05:28', '0367547809'),
-(91, '2025-04-11', '2025-04-11', 4, 'Đã hủy', 'Duc Phong, Bu Dang, Binh Phuoc', 48000.00, 'cod', '2025-04-11 16:45:02', '0367547809'),
-(92, '2025-04-11', '2025-04-11', 8, 'Đã thanh toán', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 48000.00, 'paypal', '2025-04-11 17:00:31', '0367547809'),
-(93, '2025-04-12', '2025-04-12', 8, 'Đã giao', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 95000.00, 'cod', '2025-04-12 16:14:01', '0367547809'),
-(96, '2025-04-13', '2025-04-13', 8, 'Đã hủy', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 56000.00, 'cod', '2025-04-13 11:57:44', '0367547809');
+INSERT INTO `bill` (`bill_id`, `ngaydat`, `ngaygiao`, `id_account`, `status`, `address`, `total_amount`, `payment_method`, `created_at`, `phone`, `name`) VALUES
+(1, '2025-03-15', '2025-03-16', 4, 'Đã giao', '123 Đường ABC, TP. HCM', 250000.00, 'COD', '2025-03-21 12:44:34', '', NULL),
+(2, '2025-03-16', '2025-03-18', 8, 'Đã giao', '456 Đường XYZ, Hà Nội', 180000.00, 'Chuyển khoản', '2025-03-21 12:44:34', '', NULL),
+(3, '2025-03-17', '2025-03-19', 4, 'Đã giao', '789 Đường DEF, Đà Nẵng', 320000.00, 'COD', '2025-03-21 12:44:34', '', NULL),
+(4, '2025-02-10', '2025-02-11', 4, 'Đã giao', '12 Nguyễn Trãi, Hà Nội', 300000.00, 'Chuyển khoản', '2025-03-21 12:48:04', '', NULL),
+(5, '2025-02-12', '2025-02-13', 8, 'Đã hủy', '45 Lê Lợi, TP. HCM', 275000.00, 'COD', '2025-03-21 12:48:04', '', NULL),
+(6, '2025-02-14', '2025-02-15', 4, 'Đã giao', '78 Hoàng Văn Thụ, Đà Nẵng', 220000.00, 'Momo', '2025-03-21 12:48:04', '', NULL),
+(7, '2025-02-16', '2025-02-18', 8, 'Đã hủy', '90 Trần Hưng Đạo, Hải Phòng', 350000.00, 'Chuyển khoản', '2025-03-21 12:48:04', '', NULL),
+(8, '2025-03-19', '2025-03-20', 4, 'Đã giao', 'Bu Dang, Binh Phuoc', 120000.00, 'COD', '2025-03-24 11:20:00', '', NULL),
+(9, '2025-03-19', '2025-03-20', 8, 'Đã giao', 'Duc Hoa, Binh Phuoc', 90000.00, 'Momo', '2025-03-24 11:20:00', '', NULL),
+(10, '2025-03-20', '2025-03-21', 4, 'Đã giao', 'Bu Dang, Binh Phuoc', 75000.00, 'Momo', '2025-03-24 11:20:00', '', NULL),
+(17, '2025-04-02', '2025-04-04', 8, 'Đã hủy', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 140000.00, 'cod', '2025-04-02 13:34:46', '', NULL),
+(18, '2025-04-02', '2025-04-04', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 105000.00, 'cod', '2025-04-02 13:53:04', '', NULL),
+(19, '2025-04-02', '2025-04-04', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 105000.00, 'paypal', '2025-04-02 14:25:10', '', NULL),
+(20, '2025-04-02', '2025-04-04', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 105000.00, 'paypal', '2025-04-02 14:34:02', '', NULL),
+(21, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 138000.00, 'cod', '2025-04-02 17:29:07', '0367547809', NULL),
+(22, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 90000.00, 'cod', '2025-04-02 17:31:00', '0367547809', NULL),
+(23, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 90000.00, 'cod', '2025-04-02 17:35:08', '0367547809', NULL),
+(24, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', '\r\nBình Dương', 90000.00, 'cod', '2025-04-02 17:40:38', '0367547809', NULL),
+(25, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', '\r\nBình Dương', 90000.00, 'cod', '2025-04-02 17:44:16', '0367547809', NULL),
+(26, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', '\r\nBình Dương', 138000.00, 'COD', '2025-04-02 17:49:33', '0367547809', NULL),
+(27, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 63000.00, 'COD', '2025-04-02 17:50:36', '0367547809', NULL),
+(28, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 255000.00, 'COD', '2025-04-02 17:53:57', '0367547809', NULL),
+(29, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 255000.00, 'COD', '2025-04-02 17:56:35', '0367547809', NULL),
+(30, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 485000.00, 'COD', '2025-04-02 18:00:23', '0367547809', NULL),
+(31, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 691000.00, 'COD', '2025-04-02 18:04:48', '0367547809', NULL),
+(32, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 669000.00, 'COD', '2025-04-02 18:07:42', '0367547809', NULL),
+(33, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 390000.00, 'COD', '2025-04-02 18:08:45', '0367547809', NULL),
+(34, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 669000.00, 'COD', '2025-04-02 18:10:34', '0367547809', NULL),
+(35, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 765000.00, 'COD', '2025-04-02 18:11:52', '0367547809', NULL),
+(36, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 158000.00, 'cod', '2025-04-02 18:14:37', '0367547809', NULL),
+(37, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 235000.00, 'cod', '2025-04-02 18:16:01', '0367547809', NULL),
+(38, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 165000.00, 'cod', '2025-04-02 18:24:09', '0367547809', NULL),
+(39, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-02 18:33:04', '0367547809', NULL),
+(40, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-02 18:37:04', '0367547809', NULL),
+(41, '2025-04-02', '2025-04-05', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-02 18:44:38', '0367547809', NULL),
+(42, '2025-04-02', '2025-04-05', 8, 'Đã xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 84000.00, 'cod', '2025-04-02 19:25:16', '0367547809', NULL),
+(43, '2025-04-02', '2025-04-05', 8, 'Đã xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 230000.00, 'cod', '2025-04-02 19:36:45', '0367547809', NULL),
+(44, '2025-04-02', '2025-04-05', 4, 'Đã hủy', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 390000.00, 'cod', '2025-04-02 20:51:30', '0367547809', NULL),
+(45, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 240000.00, 'cod', '2025-04-03 11:42:26', '0367547809', NULL),
+(46, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 1140000.00, 'cod', '2025-04-03 11:47:47', '0367547809', NULL),
+(47, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 355000.00, 'paypal', '2025-04-03 12:24:08', '0367547809', NULL),
+(48, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc\r\nDuc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 158000.00, 'paypal', '2025-04-03 12:28:56', '0367547809', NULL),
+(49, '2025-04-03', '2025-04-06', 4, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:31:38', '0367547809', NULL),
+(50, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:35:23', '0367547809', NULL),
+(51, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:36:05', '0367547809', NULL),
+(52, '2025-04-03', '2025-04-06', 4, 'Đã hủy', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 444000.00, 'paypal', '2025-04-03 12:43:59', '0367547809', NULL),
+(53, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:00:02', '0367547809', NULL),
+(54, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'cod', '2025-04-03 13:01:30', '0367547809', NULL),
+(55, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 83000.00, 'paypal', '2025-04-03 13:01:48', '0367547809', NULL),
+(56, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:11:30', '0367547809', NULL),
+(57, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:14:29', '0367547809', NULL),
+(58, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 83000.00, 'paypal', '2025-04-03 13:15:26', '0367547809', NULL),
+(59, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 83000.00, 'paypal', '2025-04-03 13:33:28', '0367547809', NULL),
+(60, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 63000.00, 'paypal', '2025-04-03 13:38:20', '0367547809', NULL),
+(61, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 90000.00, 'paypal', '2025-04-03 13:38:37', '0367547809', NULL),
+(62, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc\r\nPhu Loi, Thu Dau Mot, Binh Duong', 63000.00, 'paypal', '2025-04-03 13:40:10', '0367547809', NULL),
+(63, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 48000.00, 'paypal', '2025-04-03 13:42:10', '0367547809', NULL),
+(64, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 48000.00, 'paypal', '2025-04-03 13:42:37', '0367547809', NULL),
+(65, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 48000.00, 'paypal', '2025-04-03 13:44:23', '0367547809', NULL),
+(66, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 190000.00, 'paypal', '2025-04-03 13:48:15', '0367547809', NULL),
+(67, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 190000.00, 'paypal', '2025-04-03 13:48:52', '0367547809', NULL),
+(68, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 190000.00, 'paypal', '2025-04-03 13:52:04', '0367547809', NULL),
+(69, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 340000.00, 'paypal', '2025-04-03 13:55:43', '0367547809', NULL),
+(70, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 680000.00, 'paypal', '2025-04-03 13:57:00', '0367547809', NULL),
+(71, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc, Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 200000.00, 'cod', '2025-04-03 14:02:56', '0367547809', NULL),
+(72, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 272000.00, 'paypal', '2025-04-03 14:07:46', '0367547809', NULL),
+(73, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 450000.00, 'paypal', '2025-04-03 14:09:44', '0367547809', NULL),
+(74, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 225000.00, 'paypal', '2025-04-03 14:12:35', '0367547809', NULL),
+(75, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 300000.00, 'paypal', '2025-04-03 14:16:31', '0367547809', NULL),
+(76, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 150000.00, 'paypal', '2025-04-03 14:19:24', '0367547809', NULL),
+(77, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 75000.00, 'cod', '2025-04-03 14:42:36', '0367547809', NULL),
+(78, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 150000.00, 'cod', '2025-04-03 15:25:20', '0367547809', NULL),
+(79, '2025-04-03', '2025-04-06', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 300000.00, 'paypal', '2025-04-03 15:32:13', '0367547809', NULL),
+(80, '2025-04-03', '2025-04-06', 8, 'Chờ xác nhận', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 313000.00, 'cod', '2025-04-03 15:42:51', '0367547809', NULL),
+(81, '2025-04-05', '2025-04-08', 4, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 450000.00, 'paypal', '2025-04-05 15:26:42', '0367547809', NULL),
+(82, '2025-04-05', '2025-04-08', 8, 'Đã giao', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 75000.00, 'cod', '2025-04-05 17:40:10', '0367547809', NULL),
+(83, '2025-04-05', '2025-04-08', 8, 'Đã thanh toán', 'Bu Dang, Binh Phuoc, Phu Loi, Thu Dau Mot, Binh Duong', 150000.00, 'paypal', '2025-04-05 17:51:34', '0367547809', NULL),
+(84, '2025-04-06', '2025-04-09', 4, 'Đã thanh toán', 'Duc Phong, Bu Dang, Binh Phuoc', 75000.00, 'paypal', '2025-04-06 16:32:11', '0367547809', NULL),
+(85, '2025-04-07', '2025-04-10', 8, 'Đã xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 375000.00, 'cod', '2025-04-07 13:57:27', '0367547809', NULL),
+(86, '2025-04-07', '2025-04-07', 8, 'Đã thanh toán', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 750000.00, 'paypal', '2025-04-07 14:01:34', '0367547809', NULL),
+(88, '2025-04-11', '2025-04-11', 4, 'Đã hủy', 'Duc Phong, Bu Dang, Binh Phuoc', 798000.00, 'cod', '2025-04-11 13:34:51', '0367547809', NULL),
+(89, '2025-04-11', '2025-04-11', 4, 'Đã thanh toán', 'Duc Phong, Bu Dang, Binh Phuoc', 1107000.00, 'paypal', '2025-04-11 14:48:36', '0367547809', NULL),
+(90, '2025-04-11', '2025-04-11', 8, 'Đã hủy', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 300000.00, 'cod', '2025-04-11 16:05:28', '0367547809', NULL),
+(91, '2025-04-11', '2025-04-11', 4, 'Đã hủy', 'Duc Phong, Bu Dang, Binh Phuoc', 48000.00, 'cod', '2025-04-11 16:45:02', '0367547809', NULL),
+(92, '2025-04-11', '2025-04-11', 8, 'Đã thanh toán', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 48000.00, 'paypal', '2025-04-11 17:00:31', '0367547809', NULL),
+(93, '2025-04-12', '2025-04-12', 8, 'Đã giao', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 95000.00, 'cod', '2025-04-12 16:14:01', '0367547809', NULL),
+(96, '2025-04-13', '2025-04-13', 8, 'Đã hủy', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 56000.00, 'cod', '2025-04-13 11:57:44', '0367547809', NULL),
+(97, '2025-04-15', '2025-04-15', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 75000.00, 'cod', '2025-04-15 22:27:00', '0367547809', NULL),
+(98, '2025-04-15', '2025-04-15', 8, 'Đã thanh toán', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 48000.00, 'paypal', '2025-04-15 22:27:26', '0367547809', NULL),
+(99, '2025-04-16', '2025-04-16', 8, 'Chờ xác nhận', 'Duc Hoa, Duc Phong, Bu Dang, Binh Phuoc', 48000.00, 'paypal', '2025-04-16 09:25:50', '0367547809', NULL);
 
 -- --------------------------------------------------------
 
@@ -271,7 +274,10 @@ INSERT INTO `bill_info` (`billinfo_id`, `id_bill`, `id_food`, `id_account`, `cou
 (130, 91, 2, 4, 1, 48000.00),
 (131, 92, 2, 8, 1, 48000.00),
 (132, 93, 1, 8, 1, 95000.00),
-(135, 96, 19, 8, 2, 28000.00);
+(135, 96, 19, 8, 2, 28000.00),
+(136, 97, 3, 8, 1, 75000.00),
+(137, 98, 2, 8, 1, 48000.00),
+(138, 99, 2, 8, 1, 48000.00);
 
 -- --------------------------------------------------------
 
@@ -353,7 +359,8 @@ INSERT INTO `contact` (`contact_id`, `Message`, `id_account`, `status`) VALUES
 (37, 'Daley Blind\r\n', 4, 'Chưa xử lý'),
 (38, 'Daley Blind\r\n', 4, 'Chưa xử lý'),
 (39, 'Daley Blind\r\n', 4, 'Chưa xử lý'),
-(40, 'Dal', 4, 'Chưa xử lý');
+(40, 'Dal', 4, 'Chưa xử lý'),
+(42, 'đầu bự', 8, 'Chưa xử lý');
 
 -- --------------------------------------------------------
 
@@ -378,28 +385,28 @@ CREATE TABLE `food` (
 --
 
 INSERT INTO `food` (`food_id`, `food_name`, `id_category`, `price`, `image`, `description`, `status`, `new_price`, `total_sold`) VALUES
-(1, 'Pizza Margherita', 1, 100000.00, 'pizza.jpg', 'Pizza truyền thống Ý với phô mai mozzarella và sốt cà chua.', 1, 95000.00, 0),
-(2, 'Bún Bò Huế', 1, 50000.00, 'bunbohue.jpg', 'Món bún nổi tiếng của miền Trung với nước dùng đậm đà.', 1, 48000.00, 11),
+(1, 'Pizza Margherita', 1, 100000.00, '67fda946bf0f3.jpg', 'Pizza truyền thống Ý với phô mai mozzarella và sốt cà chua.', 1, 95000.00, 0),
+(2, 'Bún Bò Huế', 1, 50000.00, '67fda93bc1f31.jpg', 'Món bún nổi tiếng của miền Trung với nước dùng đậm đà.', 1, 48000.00, 13),
 (3, 'Hamburger Bò', 1, 80000.00, '67dcf9938d24c.png', 'Bánh hamburger kẹp bò với rau và phô mai.', 1, 75000.00, 51),
-(4, 'Gà Rán KFC', 3, 70000.00, 'garan.jpg', 'Gà rán giòn tan với công thức đặc biệt.', 1, 68000.00, 0),
-(5, 'Mì Quảng', 1, 45000.00, 'miquang.jpg', 'Đặc sản Quảng Nam với sợi mì vàng và nước lèo thơm ngon.', 1, 43000.00, 0),
-(6, 'Burger Bò Phô Mai', 1, 75000.00, 'burger.jpg', 'Burger bò với phô mai cheddar, rau tươi và sốt đặc biệt.', 1, 70000.00, 1),
-(7, 'Pizza Hải Sản', 1, 120000.00, 'pizza.jpg', 'Pizza với tôm, mực, phô mai và sốt cà chua.', 1, 110000.00, 0),
-(8, 'Gà Rán Giòn', 1, 45000.00, 'fried_chicken.jpg', 'Gà rán giòn với lớp vỏ cay nồng.', 1, 40000.00, 0),
-(9, 'Coca-Cola 500ml', 2, 15000.00, 'coca.jpg', 'Nước ngọt có ga Coca-Cola chai 500ml.', 1, 14000.00, 0),
+(4, 'Gà Rán KFC', 3, 70000.00, '67fda9319484f.jpg', 'Gà rán giòn tan với công thức đặc biệt.', 1, 68000.00, 0),
+(5, 'Mì Quảng', 1, 45000.00, '67fda9264f656.jpg', 'Đặc sản Quảng Nam với sợi mì vàng và nước lèo thơm ngon.', 1, 43000.00, 0),
+(6, 'Burger Bò Phô Mai', 1, 75000.00, '67fda9180da4b.jpg', 'Burger bò với phô mai cheddar, rau tươi và sốt đặc biệt.', 1, 70000.00, 1),
+(7, 'Pizza Hải Sản', 1, 120000.00, '67fda90e1ea7c.jpg', 'Pizza với tôm, mực, phô mai và sốt cà chua.', 1, 110000.00, 0),
+(8, 'Gà Rán Giòn', 1, 45000.00, '67fda8fc9e507.png', 'Gà rán giòn với lớp vỏ cay nồng.', 1, 40000.00, 0),
+(9, 'Coca-Cola 500ml', 2, 15000.00, '67fda8f2c8869.png', 'Nước ngọt có ga Coca-Cola chai 500ml.', 1, 14000.00, 0),
 (10, 'Combo Burger + Pepsi', 3, 90000.00, '67e4d3a2854b0.png', 'Combo gồm 1 Burger Bò Phô Mai và 1 Pepsi 500ml.', 1, 85000.00, 0),
-(17, 'Trà sữa trân châu', 2, 35000.00, 'bubble_tea.jpg', 'Trà sữa thơm béo kết hợp với trân châu dẻo dai, thơm ngon.', 1, 32000.00, 15),
-(18, 'Cà phê sữa đá', 2, 25000.00, 'ice_coffee.jpg', 'Cà phê đậm đà kết hợp với sữa đặc, phục vụ với đá lạnh.', 1, 25000.00, 25),
-(19, 'Nước cam ép', 2, 30000.00, 'orange_juice.jpg', 'Nước cam ép tươi 100%, giàu vitamin C, không thêm đường.', 1, 28000.00, 10),
-(20, 'Sinh tố xoài', 2, 38000.00, 'mango_smoothie.jpg', 'Sinh tố xoài nguyên chất, thơm ngọt tự nhiên kết hợp với sữa tươi.', 1, 36000.00, 12),
-(21, 'Trà đào', 2, 29000.00, 'peach_tea.jpg', 'Trà đào thơm mát với lát đào tươi và đường phèn.', 1, 28000.00, 18),
-(22, 'Nước ép dưa hấu', 2, 28000.00, 'watermelon_juice.jpg', 'Nước ép dưa hấu tươi mát, giải khát tức thì.', 1, 26000.00, 8),
-(23, 'Matcha đá xay', 2, 42000.00, 'matcha.jpg', 'Matcha Nhật Bản xay với đá, sữa tươi và kem tươi béo ngậy bên trên.', 1, 39000.00, 14),
-(24, 'Combo gà rán + khoai tây', 3, 95000.00, 'combo_chicken.jpg', 'Combo gồm 2 miếng gà rán, 1 khoai tây chiên vừa và 1 nước ngọt.', 1, 89000.00, 30),
-(25, 'Combo burger + gà rán', 3, 110000.00, 'combo_burger_chicken.jpg', '1 Burger bò phô mai, 1 miếng gà rán, khoai tây chiên vừa và nước ngọt tùy chọn.', 1, 99000.00, 25),
-(26, 'Combo pizza gia đình', 3, 230000.00, 'combo_pizza.jpg', '1 Pizza cỡ lớn (tùy chọn), 1 phần salad, 2 ly nước ngọt và 2 món tráng miệng.', 1, 215000.00, 19),
-(27, 'Combo ăn sáng', 3, 75000.00, 'combo_breakfast.jpg', '1 Sandwich trứng thịt, 1 hash brown, 1 cà phê sữa đá hoặc trà.', 1, 69000.00, 23),
-(28, 'Combo sinh nhật', 3, 450000.00, '67eb3b191eb2e.png', '2 Pizza cỡ vừa, 6 miếng gà rán, 3 phần khoai tây lớn, 6 nước ngọt và 1 bánh cupcake.', 1, 399000.00, 8);
+(17, 'Trà sữa trân châu', 2, 35000.00, '67fda8e85daf2.png', 'Trà sữa thơm béo kết hợp với trân châu dẻo dai, thơm ngon.', 1, 32000.00, 15),
+(18, 'Cà phê sữa đá', 2, 25000.00, '67fda8ded71ce.png', 'Cà phê đậm đà kết hợp với sữa đặc, phục vụ với đá lạnh.', 1, 25000.00, 25),
+(19, 'Nước cam ép', 2, 30000.00, '67fda8d3ec5ab.png', 'Nước cam ép tươi 100%, giàu vitamin C, không thêm đường.', 1, 28000.00, 10),
+(20, 'Sinh tố xoài', 2, 38000.00, '67fda8c966358.png', 'Sinh tố xoài nguyên chất, thơm ngọt tự nhiên kết hợp với sữa tươi.', 1, 36000.00, 12),
+(21, 'Trà đào', 2, 29000.00, '67fda8b2691ef.png', 'Trà đào thơm mát với lát đào tươi và đường phèn.', 1, 28000.00, 18),
+(22, 'Nước ép dưa hấu', 2, 28000.00, '67fda8a61a68e.png', 'Nước ép dưa hấu tươi mát, giải khát tức thì.', 1, 26000.00, 8),
+(23, 'Matcha đá xay', 2, 42000.00, '67fda89874387.png', 'Matcha Nhật Bản xay với đá, sữa tươi và kem tươi béo ngậy bên trên.', 1, 39000.00, 14),
+(24, 'Combo gà rán + khoai tây', 3, 95000.00, '67fda88c17674.png', 'Combo gồm 2 miếng gà rán, 1 khoai tây chiên vừa và 1 nước ngọt.', 1, 89000.00, 30),
+(25, 'Combo burger + gà rán', 3, 110000.00, '67fda87b28a59.png', '1 Burger bò phô mai, 1 miếng gà rán, khoai tây chiên vừa và nước ngọt tùy chọn.', 1, 99000.00, 25),
+(26, 'Combo pizza gia đình', 3, 230000.00, '67fda8721cc25.png', '1 Pizza cỡ lớn (tùy chọn), 1 phần salad, 2 ly nước ngọt và 2 món tráng miệng.', 1, 215000.00, 19),
+(27, 'Combo ăn sáng', 3, 75000.00, '67fda869d0f75.png', '1 Sandwich trứng thịt, 1 hash brown, 1 cà phê sữa đá hoặc trà.', 1, 69000.00, 23),
+(28, 'Combo sinh nhật', 3, 450000.00, '67fda85f0db38.png', '2 Pizza cỡ vừa, 6 miếng gà rán, 3 phần khoai tây lớn, 6 nước ngọt và 1 bánh cupcake.', 1, 399000.00, 8);
 
 -- --------------------------------------------------------
 
@@ -555,19 +562,19 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT cho bảng `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT cho bảng `bill_info`
 --
 ALTER TABLE `bill_info`
-  MODIFY `billinfo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `billinfo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT cho bảng `blog`
@@ -579,7 +586,7 @@ ALTER TABLE `blog`
 -- AUTO_INCREMENT cho bảng `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT cho bảng `food`
@@ -603,7 +610,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT cho bảng `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

@@ -81,7 +81,8 @@ try {
 
                 <div class="delivery-info">
                     <h3>Thông tin giao hàng</h3>
-                    <p><strong>Người nhận:</strong> <?php echo htmlspecialchars($order['username']); ?></p>
+                    <p><strong>Người nhận:</strong> <?php echo htmlspecialchars($order['name']); ?></p>
+                    <p><strong>Người đặt:</strong> <?php echo htmlspecialchars($order['username']); ?></p>
                     <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($order['phone']); ?></p>
                     <p><strong>Địa chỉ:</strong> <?php echo htmlspecialchars($order['address']); ?></p>
                 </div>
