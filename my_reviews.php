@@ -846,6 +846,23 @@ try {
                     
                     if (data.success) {
                         showToast('Đã xóa đánh giá thành công', 'success');
+                        
+                        // Kiểm tra nếu đây là đánh giá cuối cùng trên trang hiện tại
+                        const currentReviews = document.querySelectorAll('.review-card').length;
+                        const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+                        
+                        if (currentReviews <= 1) {
+                            // Nếu đây là đánh giá cuối cùng trên trang và không phải trang 1
+                            if (currentPage > 1) {
+                                // Chuyển về trang trước đó
+                                setTimeout(() => {
+                                    window.location.href = 'my_reviews.php?page=' + (parseInt(currentPage) - 1);
+                                }, 1500);
+                                return;
+                            }
+                        }
+                        
+                        // Nếu không phải trường hợp đặc biệt, làm mới trang hiện tại
                         setTimeout(() => {
                             window.location.reload();
                         }, 1500);
