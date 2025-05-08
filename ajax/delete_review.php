@@ -2,55 +2,55 @@
 session_start();
 require_once '../config/database.php';
 
-header('Content-Type: application/json');
-
 // Kiểm tra đăng nhập
 if (!isset($_SESSION['user_id'])) {
     echo json_encode([
         'success' => false,
-        'message' => 'Vui lòng đăng nhập để thực hiện chức năng này'
+        'message' => 'Vui lòng đăng nhập để thực hiện thao tác này'
     ]);
-    exit();
+    exit;
 }
 
-// Lấy dữ liệu từ POST request
+// Nhận dữ liệu từ request
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($data['review_id'])) {
+// Kiểm tra dữ liệu
+if (!isset($data['review_id']) || !is_numeric($data['review_id'])) {
     echo json_encode([
         'success' => false,
         'message' => 'Dữ liệu không hợp lệ'
     ]);
-    exit();
+    exit;
 }
 
-$review_id = (int)$data['review_id'];
+$review_id = intval($data['review_id']);
+$user_id = $_SESSION['user_id'];
+
+$database = new Database();
+$conn = $database->getConnection();
 
 try {
-    $database = new Database();
-    $conn = $database->getConnection();
+    // Kiểm tra đánh giá có thuộc về người dùng này không
+    $stmt = $conn->prepare("SELECT * FROM reviews WHERE review_id = ? AND id_account = ?");
+    $stmt->execute([$review_id, $user_id]);
+    $review = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Kiểm tra quyền sở hữu đánh giá
-    $stmt = $conn->prepare("SELECT id_account FROM reviews WHERE review_id = ?");
-    $stmt->execute([$review_id]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$result || $result['id_account'] != $_SESSION['user_id']) {
+    if (!$review) {
         echo json_encode([
             'success' => false,
-            'message' => 'Bạn không có quyền xóa đánh giá này'
+            'message' => 'Không tìm thấy đánh giá hoặc bạn không có quyền xóa đánh giá này'
         ]);
-        exit();
+        exit;
     }
     
-    // Xóa đánh giá
+    // Thực hiện xóa đánh giá
     $stmt = $conn->prepare("DELETE FROM reviews WHERE review_id = ?");
     $result = $stmt->execute([$review_id]);
     
     if ($result) {
         echo json_encode([
             'success' => true,
-            'message' => 'Xóa đánh giá thành công'
+            'message' => 'Đã xóa đánh giá thành công'
         ]);
     } else {
         echo json_encode([

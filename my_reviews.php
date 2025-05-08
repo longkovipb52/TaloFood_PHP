@@ -187,6 +187,25 @@ try {
             color: #fff;
         }
 
+        .btn-delete {
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
         .no-reviews {
             text-align: center;
             padding: 5rem 0;
@@ -429,6 +448,96 @@ try {
         .btn-submit:hover {
             background: #c19b6c;
         }
+
+        /* Styles cho modal xác nhận xóa */
+        .confirm-modal {
+            background-color: var(--black);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            max-width: 450px;
+            text-align: center;
+            animation: modalFadeIn 0.3s;
+            margin: 0 auto;
+        }
+
+        .confirm-header {
+            background: rgba(231, 76, 60, 0.1);
+            border-bottom: 1px solid rgba(231, 76, 60, 0.2);
+            border-radius: 1rem 1rem 0 0;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .confirm-header h3 {
+            color: #e74c3c;
+            font-size: 2.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .confirm-header .close-modal {
+            font-size: 2.4rem;
+            background: none;
+            padding: 0;
+            color: #999;
+        }
+
+        .confirm-body {
+            padding: 2rem;
+        }
+
+        .confirm-body p {
+            color: #eee;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .confirm-note {
+            color: #999;
+            font-size: 1.4rem;
+            font-style: italic;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .btn-cancel {
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.6rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-confirm-delete {
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.6rem;
+            cursor: pointer;
+            background: rgba(231, 76, 60, 0.8);
+            color: #fff;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-confirm-delete:hover {
+            background: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -476,6 +585,12 @@ try {
                             data-rating="<?php echo $review['star_rating']; ?>"
                             data-comment="<?php echo htmlspecialchars($review['comment']); ?>">
                         <i class="fas fa-edit"></i> Chỉnh sửa
+                    </button>
+                    
+                    <button class="btn-delete"
+                            data-review-id="<?php echo $review['review_id']; ?>"
+                            data-food-name="<?php echo htmlspecialchars($review['food_name']); ?>">
+                        <i class="fas fa-trash"></i> Xóa
                     </button>
                 </div>
             </div>
@@ -533,6 +648,25 @@ try {
         </div>
     </div>
 
+    <!-- Modal Xác nhận xóa -->
+    <div id="delete-confirm-modal" class="modal">
+        <div class="modal-content confirm-modal">
+            <div class="modal-header confirm-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Xác Nhận Xóa</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="confirm-body">
+                <p>Bạn có chắc chắn muốn xóa đánh giá cho món "<span id="delete-food-name"></span>"?</p>
+                <p class="confirm-note">Lưu ý: Hành động này không thể hoàn tác.</p>
+            </div>
+            <div class="confirm-actions">
+                <button class="btn-cancel close-modal">Hủy</button>
+                <button id="btn-confirm-delete" class="btn-confirm-delete">Xác nhận xóa</button>
+            </div>
+            <input type="hidden" id="delete-review-id">
+        </div>
+    </div>
+
     <?php include 'includes/footer.php'; ?>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -574,6 +708,7 @@ try {
             closeButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     editModal.style.display = 'none';
+                    document.getElementById('delete-confirm-modal').style.display = 'none';
                 });
             });
             
@@ -581,6 +716,8 @@ try {
             window.addEventListener('click', function(event) {
                 if (event.target === editModal) {
                     editModal.style.display = 'none';
+                } else if (event.target === document.getElementById('delete-confirm-modal')) {
+                    document.getElementById('delete-confirm-modal').style.display = 'none';
                 }
             });
             
@@ -666,6 +803,54 @@ try {
                         }, 1500);
                     } else {
                         showToast(data.message || 'Có lỗi xảy ra khi cập nhật đánh giá', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Có lỗi xảy ra khi kết nối đến server', 'error');
+                });
+            });
+            
+            // Delete review button
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reviewId = this.getAttribute('data-review-id');
+                    const foodName = this.getAttribute('data-food-name');
+                    
+                    // Populate confirm modal
+                    document.getElementById('delete-food-name').textContent = foodName;
+                    document.getElementById('delete-review-id').value = reviewId;
+                    
+                    // Show modal
+                    document.getElementById('delete-confirm-modal').style.display = 'block';
+                });
+            });
+
+            // Confirm delete button
+            document.getElementById('btn-confirm-delete').addEventListener('click', function() {
+                const reviewId = document.getElementById('delete-review-id').value;
+                
+                // Send delete request
+                fetch('ajax/delete_review.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        review_id: reviewId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('delete-confirm-modal').style.display = 'none';
+                    
+                    if (data.success) {
+                        showToast('Đã xóa đánh giá thành công', 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        showToast(data.message || 'Có lỗi xảy ra khi xóa đánh giá', 'error');
                     }
                 })
                 .catch(error => {

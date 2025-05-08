@@ -1100,10 +1100,10 @@ try {
                             // Kiểm tra xem đơn hàng đã giao chưa và người dùng đã đánh giá sản phẩm này chưa
                             if ($currentOrder['status'] == 'Đã giao'):
                                 $reviewed = false;
-                                // Kiểm tra xem sản phẩm đã được đánh giá chưa
+                                // Kiểm tra xem sản phẩm trong đơn hàng cụ thể đã được đánh giá chưa
                                 $reviewStmt = $conn->prepare("SELECT review_id, star_rating, comment FROM reviews 
-                                                           WHERE id_account = ? AND id_food = ?");
-                                $reviewStmt->execute([$_SESSION['user_id'], $item['id_food']]);
+                                                           WHERE id_account = ? AND id_food = ? AND id_bill_info = ?");
+                                $reviewStmt->execute([$_SESSION['user_id'], $item['id_food'], $item['billinfo_id']]);
                                 $review = $reviewStmt->fetch(PDO::FETCH_ASSOC);
                                 if ($review): 
                                     $reviewed = true;
@@ -1115,16 +1115,20 @@ try {
                                         <?php endfor; ?>
                                     </div>
                                     <div class="user-comment"><?php echo htmlspecialchars($review['comment']); ?></div>
-                                    <button class="edit-review-btn" data-food-id="<?php echo $item['id_food']; ?>" 
+                                    <button class="edit-review-btn" 
+                                        data-food-id="<?php echo $item['id_food']; ?>" 
                                         data-food-name="<?php echo htmlspecialchars($item['food_name']); ?>"
+                                        data-bill-info-id="<?php echo $item['billinfo_id']; ?>"
                                         data-rating="<?php echo $review['star_rating']; ?>"
                                         data-comment="<?php echo htmlspecialchars($review['comment']); ?>">
                                         <i class="fas fa-edit"></i> Sửa đánh giá
                                     </button>
                                 </div>
                             <?php else: ?>
-                                <button class="write-review-btn" data-food-id="<?php echo $item['id_food']; ?>" 
-                                    data-food-name="<?php echo htmlspecialchars($item['food_name']); ?>">
+                                <button class="write-review-btn" 
+                                    data-food-id="<?php echo $item['id_food']; ?>" 
+                                    data-food-name="<?php echo htmlspecialchars($item['food_name']); ?>"
+                                    data-bill-info-id="<?php echo $item['billinfo_id']; ?>">
                                     <i class="fas fa-star"></i> Đánh giá sản phẩm
                                 </button>
                             <?php 
@@ -1236,6 +1240,7 @@ try {
             </div>
             <form id="review-form">
                 <input type="hidden" name="food_id" id="food-id">
+                <input type="hidden" name="bill_info_id" id="bill-info-id">
                 <input type="hidden" name="action" id="review-action" value="add">
                 <input type="hidden" name="star_rating" id="star-rating" value="0">
                 
@@ -1406,10 +1411,12 @@ try {
                 button.addEventListener('click', function() {
                     const foodId = this.getAttribute('data-food-id');
                     const foodName = this.getAttribute('data-food-name');
+                    const billInfoId = this.getAttribute('data-bill-info-id');
                     
                     // Reset form
                     reviewForm.reset();
                     document.getElementById('food-id').value = foodId;
+                    document.getElementById('bill-info-id').value = billInfoId;
                     document.getElementById('food-name').textContent = foodName;
                     document.getElementById('review-action').value = 'add';
                     document.getElementById('review-title').textContent = 'Đánh giá sản phẩm';
@@ -1424,17 +1431,19 @@ try {
                     modal.style.display = 'block';
                 });
             });
-            
+
             // Mở modal khi nhấn nút sửa đánh giá
             document.querySelectorAll('.edit-review-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const foodId = this.getAttribute('data-food-id');
                     const foodName = this.getAttribute('data-food-name');
+                    const billInfoId = this.getAttribute('data-bill-info-id');
                     const rating = parseInt(this.getAttribute('data-rating'));
                     const comment = this.getAttribute('data-comment');
                     
                     // Điền dữ liệu vào form
                     document.getElementById('food-id').value = foodId;
+                    document.getElementById('bill-info-id').value = billInfoId;
                     document.getElementById('food-name').textContent = foodName;
                     document.getElementById('review-comment').value = comment;
                     document.getElementById('review-action').value = 'edit';
