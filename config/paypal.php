@@ -13,8 +13,8 @@ define('PAYPAL_API_URL', PAYPAL_MODE === 'sandbox'
 define('PAYPAL_SUCCESS_URL', 'http://localhost:8080/TaloFood/paypal_success.php');
 define('PAYPAL_CANCEL_URL', 'http://localhost:8080/TaloFood/paypal_cancel.php');
 
-// Exchange rate (1 USD = 23,000 VND)
-define('VND_TO_USD', 23000);
+// Exchange rate (1 USD = 25,000 VND)
+define('VND_TO_USD', 25000);
 
 /**
  * Get PayPal access token
@@ -114,4 +114,4 @@ function capturePayPalOrder($order_id) {
     }
 
     return json_decode($response, true);
-} 
+}

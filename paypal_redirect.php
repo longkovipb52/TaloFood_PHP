@@ -46,15 +46,19 @@ try {
     $total_amount = 0;
 
     foreach ($order_items as $item) {
+        // Chuyển đổi theo tỉ giá cố định 1 USD = 25000 VND
         $item_price_usd = round($item['new_price'] / VND_TO_USD, 2);
         $item_total = $item_price_usd * $item['count'];
         $total_amount += $item_total;
 
+        // Đảm bảo hiển thị đúng 2 chữ số sau dấu thập phân
+        $formatted_price = number_format($item_price_usd, 2, '.', '');
+        
         $items[] = array(
             'name' => $item['food_name'],
             'unit_amount' => array(
                 'currency_code' => 'USD',
-                'value' => number_format($item_price_usd, 2, '.', '')
+                'value' => $formatted_price
             ),
             'quantity' => $item['count'],
             'description' => 'Món ăn từ TaloFood'

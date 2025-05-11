@@ -164,14 +164,43 @@ if ($isAjaxRequest) {
         <?php endif; ?>
 
         <div class="search-sort-container">
-            <div class="sort-box">
-                <select id="sort-menu">
-                    <option value="default">Sắp xếp mặc định</option>
-                    <option value="price-asc">Giá: Thấp đến cao</option>
-                    <option value="price-desc">Giá: Cao đến thấp</option>
-                    <option value="name-asc">Tên: A-Z</option>
-                    <option value="name-desc">Tên: Z-A</option>
-                </select>
+            <div class="custom-sort-box">
+                <div class="sort-selected">
+                    <i class="fas fa-sort"></i>
+                    <span>Sắp xếp mặc định</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sort-options">
+                    <div class="sort-option active" data-value="default">
+                        <i class="fas fa-sort"></i>
+                        <span>Sắp xếp mặc định</span>
+                    </div>
+                    <!-- Thêm hai tùy chọn sắp xếp theo đánh giá -->
+                    <div class="sort-option" data-value="rating-desc">
+                        <i class="fas fa-star"></i>
+                        <span>Đánh giá: Cao nhất</span>
+                    </div>
+                    <div class="sort-option" data-value="rating-asc">
+                        <i class="far fa-star"></i>
+                        <span>Đánh giá: Thấp nhất</span>
+                    </div>
+                    <div class="sort-option" data-value="price-asc">
+                        <i class="fas fa-sort-amount-up-alt"></i>
+                        <span>Giá: Thấp đến cao</span>
+                    </div>
+                    <div class="sort-option" data-value="price-desc">
+                        <i class="fas fa-sort-amount-down"></i>
+                        <span>Giá: Cao đến thấp</span>
+                    </div>
+                    <div class="sort-option" data-value="name-asc">
+                        <i class="fas fa-sort-alpha-down"></i>
+                        <span>Tên: A-Z</span>
+                    </div>
+                    <div class="sort-option" data-value="name-desc">
+                        <i class="fas fa-sort-alpha-up"></i>
+                        <span>Tên: Z-A</span>
+                    </div>
+                </div>
             </div>
         </div>
         

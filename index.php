@@ -54,7 +54,8 @@ try {
 		FROM reviews r
 		JOIN account a ON r.id_account = a.account_id
 		JOIN food f ON r.id_food = f.food_id
-		ORDER BY r.created_at DESC
+		WHERE r.star_rating >= 4
+		ORDER BY r.star_rating DESC, r.created_at DESC
 		LIMIT 3");
 	$stmt->execute();
 	$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -216,26 +217,38 @@ try {
 	</section>
 
 	<section class="review" id="review">
-		<h1 class="heading">Đánh giá <span>khách hàng</span></h1>
+		<h1 class="heading">Đánh giá <span>nổi bật</span></h1>
 		<div class="box-container">
 			<?php foreach ($reviews as $review): ?>
 			<div class="box">
 				<img src="assets/images/quote-img.png" alt="" class="quote">
-				<p><?php echo htmlspecialchars($review['comment']); ?></p>
-				<img src="<?php echo $review['profile_image'] ? 'uploads/avatars/' . $review['profile_image'] : 'assets/images/default-avatar.png'; ?>" 
-					 class="user" alt="<?php echo htmlspecialchars($review['username']); ?>">
-				<h3><?php echo htmlspecialchars($review['username']); ?></h3>
-				<div class="stars">
-					<?php
-					$rating = $review['star_rating'];
-					for ($i = 1; $i <= 5; $i++) {
-						if ($i <= $rating) {
-							echo '<i class="fas fa-star"></i>';
-						} else {
-							echo '<i class="far fa-star"></i>';
+				<div class="review-header">
+					<div class="user-info">
+						<img src="<?php echo $review['profile_image'] ? 'uploads/avatars/' . $review['profile_image'] : 'assets/images/default-avatar.png'; ?>" 
+							class="user" alt="<?php echo htmlspecialchars($review['username']); ?>">
+						<h3><?php echo htmlspecialchars($review['username']); ?></h3>
+					</div>
+					<div class="food-info">
+						<img src="uploads/foods/<?php echo htmlspecialchars($review['food_image']); ?>" 
+							class="food-thumbnail" alt="<?php echo htmlspecialchars($review['food_name']); ?>">
+						<span class="food-name"><?php echo htmlspecialchars($review['food_name']); ?></span>
+					</div>
+				</div>
+				<p class="review-text"><?php echo htmlspecialchars($review['comment']); ?></p>
+				<div class="review-footer">
+					<div class="stars">
+						<?php
+						$rating = $review['star_rating'];
+						for ($i = 1; $i <= 5; $i++) {
+							if ($i <= $rating) {
+								echo '<i class="fas fa-star"></i>';
+							} else {
+								echo '<i class="far fa-star"></i>';
+							}
 						}
-					}
-					?>
+						?>
+					</div>
+					<div class="review-date"><?php echo date('d/m/Y', strtotime($review['created_at'])); ?></div>
 				</div>
 			</div>
 			<?php endforeach; ?>

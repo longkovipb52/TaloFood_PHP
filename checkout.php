@@ -330,13 +330,9 @@ foreach ($_SESSION['cart'] as $food_id => $cart_item) {
                         <span>Tạm tính:</span>
                         <span><?php echo number_format($total_amount); ?> VND</span>
                     </div>
-                    <div class="total-row">
-                        <span>Phí vận chuyển:</span>
-                        <span>15000 VND</span>
-                    </div>
                     <div class="total-row final">
                         <span>Tổng cộng:</span>
-                        <span><?php echo number_format($total_amount +15000); ?> VND</span>
+                        <span><?php echo number_format($total_amount); ?> VND</span>
                     </div>
                 </div>
             </div>

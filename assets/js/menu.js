@@ -247,6 +247,192 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Custom Sort Dropdown
+    const sortSelected = document.querySelector('.sort-selected');
+    const sortOptions = document.querySelector('.sort-options');
+    const sortOptionItems = document.querySelectorAll('.sort-option');
+    const selectedText = sortSelected.querySelector('span');
+    const selectedIcon = sortSelected.querySelector('i:first-child');
+    
+    // Toggle dropdown visibility
+    sortSelected.addEventListener('click', function() {
+        sortSelected.classList.toggle('open');
+        sortOptions.classList.toggle('open');
+        
+        // Auto close dropdown if clicked outside
+        if (sortOptions.classList.contains('open')) {
+            document.addEventListener('click', closeDropdown);
+        } else {
+            document.removeEventListener('click', closeDropdown);
+        }
+    });
+    
+    function closeDropdown(e) {
+        if (!sortSelected.contains(e.target) && !sortOptions.contains(e.target)) {
+            sortSelected.classList.remove('open');
+            sortOptions.classList.remove('open');
+            document.removeEventListener('click', closeDropdown);
+        }
+    }
+    
+    // Handle option selection
+    sortOptionItems.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove active class from all options
+            sortOptionItems.forEach(opt => opt.classList.remove('active'));
+            
+            // Add active class to selected option
+            this.classList.add('active');
+            this.classList.add('selecting');
+            
+            // Update the selected display
+            selectedText.textContent = this.querySelector('span').textContent;
+            selectedIcon.className = this.querySelector('i').className;
+            
+            // Get the sort value
+            const sortValue = this.getAttribute('data-value');
+            
+            // Apply the sorting action
+            applySorting(sortValue);
+            
+            // Close dropdown
+            setTimeout(() => {
+                sortSelected.classList.remove('open');
+                sortOptions.classList.remove('open');
+                this.classList.remove('selecting');
+            }, 300);
+        });
+    });
+    
+    // Function to apply sorting
+    function applySorting(sortValue) {
+        // Current URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentCategory = urlParams.get('category') || '';
+        const currentSearch = urlParams.get('search') || '';
+        
+        // Create the URL for AJAX request
+        let url = 'menu.php?ajax=1';
+        if (currentCategory) url += `&category=${currentCategory}`;
+        if (currentSearch) url += `&search=${currentSearch}`;
+        
+        // Show loading indicator with animation
+        const menuGrid = document.querySelector('.menu-grid');
+        menuGrid.classList.add('loading');
+        
+        // Perform AJAX request to get sorted items
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const container = document.querySelector('.menu-categories');
+                const oldGrid = container.querySelector('.menu-grid');
+                
+                // Replace the grid with new content
+                oldGrid.innerHTML = '';
+                oldGrid.classList.remove('loading');
+                
+                // Create a temporary container to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data;
+                
+                // Extract the menu items
+                const menuItems = tempDiv.querySelectorAll('.menu-item');
+                
+                // Sort the items based on the selected option
+                const sortedItems = Array.from(menuItems);
+                
+                if (sortValue === 'price-asc') {
+                    sortedItems.sort((a, b) => {
+                        const priceA = parseFloat(a.querySelector('.new-price').textContent.replace(/[^\d]/g, ''));
+                        const priceB = parseFloat(b.querySelector('.new-price').textContent.replace(/[^\d]/g, ''));
+                        return priceA - priceB;
+                    });
+                } else if (sortValue === 'price-desc') {
+                    sortedItems.sort((a, b) => {
+                        const priceA = parseFloat(a.querySelector('.new-price').textContent.replace(/[^\d]/g, ''));
+                        const priceB = parseFloat(b.querySelector('.new-price').textContent.replace(/[^\d]/g, ''));
+                        return priceB - priceA;
+                    });
+                } else if (sortValue === 'name-asc') {
+                    sortedItems.sort((a, b) => {
+                        const nameA = a.querySelector('h3').textContent;
+                        const nameB = b.querySelector('h3').textContent;
+                        return nameA.localeCompare(nameB);
+                    });
+                } else if (sortValue === 'name-desc') {
+                    sortedItems.sort((a, b) => {
+                        const nameA = a.querySelector('h3').textContent;
+                        const nameB = b.querySelector('h3').textContent;
+                        return nameB.localeCompare(nameA);
+                    });
+                } 
+                // Thêm xử lý cho sắp xếp theo đánh giá
+                else if (sortValue === 'rating-desc') {
+                    sortedItems.sort((a, b) => {
+                        const ratingA = getRatingValue(a);
+                        const ratingB = getRatingValue(b);
+                        return ratingB - ratingA;
+                    });
+                } else if (sortValue === 'rating-asc') {
+                    sortedItems.sort((a, b) => {
+                        const ratingA = getRatingValue(a);
+                        const ratingB = getRatingValue(b);
+                        return ratingA - ratingB;
+                    });
+                }
+                
+                // Add items to the grid with staggered animation
+                sortedItems.forEach((item, index) => {
+                    // Add animation class
+                    item.style.animationDelay = `${index * 0.05}s`;
+                    item.classList.add('fade-in');
+                    oldGrid.appendChild(item);
+                });
+                
+                // After sorting, attach event listeners to buttons
+                attachEventListenersToMenuItems();
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.querySelector('.menu-grid').classList.remove('loading');
+            });
+    }
+    
+    // Hàm lấy giá trị đánh giá từ phần tử menu
+    function getRatingValue(menuItem) {
+        // Đếm số lượng ngôi sao đầy (fas fa-star)
+        const fullStars = menuItem.querySelectorAll('.item-rating .fas.fa-star').length;
+        
+        // Lấy số lượng đánh giá từ văn bản trong ngoặc
+        const reviewText = menuItem.querySelector('.item-rating span').textContent;
+        const reviewCount = parseInt(reviewText.match(/\d+/) || '0');
+        
+        // Ưu tiên món có đánh giá cao, nhưng nếu có cùng số sao thì ưu tiên món có nhiều đánh giá hơn
+        // Tính điểm tổng hợp: số sao * 100 + số lượng đánh giá (tối đa 99 đánh giá)
+        return (fullStars * 100) + Math.min(reviewCount, 99);
+    }
+    
+    // Function to attach event listeners to menu items after sorting
+    function attachEventListenersToMenuItems() {
+        // Quick view buttons
+        document.querySelectorAll('.quick-view-btn').forEach(btn => {
+            btn.onclick = function() {
+                const foodId = this.closest('.menu-item').getAttribute('data-id');
+                openQuickView(foodId);
+                return false;
+            };
+        });
+        
+        // Add to cart buttons
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.onclick = function() {
+                const foodId = this.closest('.menu-item').getAttribute('data-id');
+                addToCart(foodId);
+                return false;
+            };
+        });
+    }
 });
 
 // Format price with thousands separator

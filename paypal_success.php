@@ -50,7 +50,7 @@ try {
     
     if ($capture_response && isset($capture_response['status']) && $capture_response['status'] === 'COMPLETED') {
         // Cập nhật trạng thái đơn hàng
-        $stmt = $db->prepare("UPDATE bill SET status = 'Đã thanh toán' WHERE bill_id = ?");
+        $stmt = $db->prepare("UPDATE bill SET status = 'Chờ xác nhận' WHERE bill_id = ?");
         if (!$stmt->execute([$_SESSION['paypal_bill_id']])) {
             throw new Exception("Không thể cập nhật trạng thái đơn hàng");
         }

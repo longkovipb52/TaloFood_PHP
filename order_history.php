@@ -48,16 +48,57 @@ try {
     $reputation_status_text = 'Tốt';
 }
 
+// Các thông số phân trang
+$items_per_page = 5; // Số đơn hàng hiển thị trên mỗi trang
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$current_page = max(1, $current_page); // Đảm bảo trang hiện tại không nhỏ hơn 1
+$offset = ($current_page - 1) * $items_per_page;
+$filter_status = isset($_GET['status']) && $_GET['status'] !== 'all' ? $_GET['status'] : null;
+
 try {
-    // Lấy tất cả đơn hàng của người dùng
-    $stmt = $conn->prepare("
-        SELECT bill_id, ngaydat, ngaygiao, status, address, total_amount, payment_method, created_at, phone
-        FROM bill 
-        WHERE id_account = :user_id 
-        ORDER BY ngaydat DESC
-    ");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    // Đầu tiên đếm tổng số đơn hàng (có hoặc không có bộ lọc)
+    $count_query = "SELECT COUNT(*) FROM bill WHERE id_account = :user_id";
+    $count_params = [':user_id' => $user_id];
+    
+    if ($filter_status) {
+        $count_query .= " AND status = :status";
+        $count_params[':status'] = $filter_status;
+    }
+    
+    $count_stmt = $conn->prepare($count_query);
+    $count_stmt->execute($count_params);
+    $total_orders = $count_stmt->fetchColumn();
+    
+    // Tính tổng số trang
+    $total_pages = ceil($total_orders / $items_per_page);
+    
+    // Kiểm tra lại trang hiện tại không vượt quá tổng số trang
+    $current_page = min($current_page, max(1, $total_pages));
+    
+    // Lấy đơn hàng cho trang hiện tại
+    $query = "SELECT bill_id, ngaydat, ngaygiao, status, address, total_amount, payment_method, created_at, phone 
+              FROM bill 
+              WHERE id_account = :user_id";
+              
+    $params = [':user_id' => $user_id];
+    
+    if ($filter_status) {
+        $query .= " AND status = :status";
+        $params[':status'] = $filter_status;
+    }
+    
+    $query .= " ORDER BY ngaydat DESC LIMIT :offset, :items_per_page";
+    
+    $stmt = $conn->prepare($query);
+    
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value);
+    }
+    
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':items_per_page', $items_per_page, PDO::PARAM_INT);
     $stmt->execute();
+    
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Lấy thông tin chi tiết đơn hàng nếu có tham số order_id
@@ -961,6 +1002,54 @@ try {
                 width: 100%;
             }
         }
+
+        /* Thêm vào phần style hiện có của trang */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 0.5rem;
+        }
+
+        .pagination-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.8rem;
+            font-size: 1.6rem;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-item:hover {
+            background: rgba(211, 173, 127, 0.2);
+        }
+
+        .pagination-item.active {
+            background: var(--main-color);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .pagination-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-item i {
+            font-size: 1.4rem;
+        }
+
+        .pagination-status {
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.4rem;
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
@@ -1008,7 +1097,18 @@ try {
 
         <?php if (isset($_GET['order_id']) && isset($currentOrder)): ?>
             <!-- Chi tiết đơn hàng -->
-            <a href="order_history.php" class="back-btn">
+            <?php
+            $back_url = "order_history.php";
+            if (isset($_GET['page'])) {
+                $back_url .= "?page=" . $_GET['page'];
+                if (isset($_GET['status'])) {
+                    $back_url .= "&status=" . urlencode($_GET['status']);
+                }
+            } elseif (isset($_GET['status'])) {
+                $back_url .= "?status=" . urlencode($_GET['status']);
+            }
+            ?>
+            <a href="<?php echo $back_url; ?>" class="back-btn">
                 <i class="fas fa-arrow-left"></i> Quay lại danh sách đơn hàng
             </a>
             
@@ -1226,6 +1326,60 @@ try {
                     </div>
                 </div>
                 <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            
+            <!-- Phân trang -->
+            <?php if ($total_pages > 1): ?>
+            <div class="pagination-status">
+                Hiển thị <?php echo min($total_orders, 1 + $offset); ?>-<?php echo min($total_orders, $offset + count($orders)); ?> 
+                của <?php echo $total_orders; ?> đơn hàng
+            </div>
+
+            <div class="pagination">
+                <!-- Nút Trang trước -->
+                <a href="<?php echo $current_page > 1 
+                    ? 'order_history.php?page=' . ($current_page - 1) . ($filter_status ? '&status=' . urlencode($filter_status) : '') 
+                    : 'javascript:void(0)'; ?>" 
+                   class="pagination-item <?php echo $current_page <= 1 ? 'disabled' : ''; ?>">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                
+                <?php
+                // Hiển thị các số trang
+                $start_page = max(1, $current_page - 2);
+                $end_page = min($total_pages, $current_page + 2);
+                
+                // Luôn hiển thị trang đầu tiên
+                if ($start_page > 1) {
+                    echo '<a href="order_history.php?page=1' . ($filter_status ? '&status=' . urlencode($filter_status) : '') . '" class="pagination-item">1</a>';
+                    if ($start_page > 2) {
+                        echo '<span class="pagination-item disabled">...</span>';
+                    }
+                }
+                
+                // Hiển thị các trang giữa
+                for ($i = $start_page; $i <= $end_page; $i++) {
+                    $active_class = $i === $current_page ? 'active' : '';
+                    echo '<a href="order_history.php?page=' . $i . ($filter_status ? '&status=' . urlencode($filter_status) : '') . '" class="pagination-item ' . $active_class . '">' . $i . '</a>';
+                }
+                
+                // Luôn hiển thị trang cuối cùng
+                if ($end_page < $total_pages) {
+                    if ($end_page < $total_pages - 1) {
+                        echo '<span class="pagination-item disabled">...</span>';
+                    }
+                    echo '<a href="order_history.php?page=' . $total_pages . ($filter_status ? '&status=' . urlencode($filter_status) : '') . '" class="pagination-item">' . $total_pages . '</a>';
+                }
+                ?>
+                
+                <!-- Nút Trang sau -->
+                <a href="<?php echo $current_page < $total_pages 
+                    ? 'order_history.php?page=' . ($current_page + 1) . ($filter_status ? '&status=' . urlencode($filter_status) : '') 
+                    : 'javascript:void(0)'; ?>" 
+                   class="pagination-item <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
             </div>
             <?php endif; ?>
         <?php endif; ?>
@@ -1577,6 +1731,43 @@ try {
                     setTimeout(() => toast.remove(), 300);
                 }, 3000);
             }
+
+            // Cập nhật xử lý tab để hoạt động với phân trang
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const status = this.getAttribute('data-status');
+                    
+                    // Update active tab
+                    tabBtns.forEach(tab => tab.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Chuyển hướng đến trang 1 với bộ lọc
+                    if (status === 'all') {
+                        window.location.href = 'order_history.php?page=1';
+                    } else {
+                        window.location.href = 'order_history.php?page=1&status=' + encodeURIComponent(status);
+                    }
+                });
+            });
+            
+            // Đánh dấu tab đang hoạt động dựa vào tham số URL
+            function setActiveTab() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const status = urlParams.get('status');
+                
+                // Đặt tab đang hoạt động
+                tabBtns.forEach(btn => {
+                    if ((status === null && btn.getAttribute('data-status') === 'all') || 
+                        (status === btn.getAttribute('data-status'))) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Gọi hàm để đặt tab đang hoạt động khi trang tải
+            setActiveTab();
         });
     </script>
 </body>

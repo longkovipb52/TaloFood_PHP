@@ -103,7 +103,7 @@ try {
 
                     <div class="order-total">
                         <span>Tổng tiền:</span>
-                        <span><?php echo number_format($order['total_amount'] + 15000); ?> VND</span>
+                        <span><?php echo number_format($order['total_amount']); ?> VND</span>
                     </div>
                 </div>
             </div>

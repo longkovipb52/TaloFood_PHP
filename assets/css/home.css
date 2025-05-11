@@ -289,42 +289,181 @@ section {
     font-size: 1.5rem;
 }
 
-/* Review Section */
+/* Review Section - Enhanced */
 .review .box-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(34rem, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
 }
 
 .review .box-container .box {
     border: var(--border);
-    text-align: center;
-    padding: 3rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 1.5rem;
+    padding: 3rem 2.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.review .box-container .box p {
-    font-size: 1.5rem;
-    line-height: 1.8;
-    color: #ccc;
-    padding: 2rem 0;
+.review .box-container .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-color: var(--main-color);
 }
 
-.review .box-container .box .user {
-    height: 7rem;
-    width: 7rem;
+.review .box-container .box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5rem 5rem 0;
+    border-color: transparent var(--main-color) transparent transparent;
+    opacity: 0.3;
+}
+
+.review .box-container .box .quote {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    opacity: 0.2;
+    width: 5rem;
+    height: auto;
+    z-index: 1;
+}
+
+.review .box-container .box .review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.review .box-container .box .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.review .box-container .box .user-info .user {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--main-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.review .box-container .box .user-info h3 {
+    margin-left: 1.5rem;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.review .box-container .box .food-info {
+    display: flex;
+    align-items: center;
+    background: rgba(211, 173, 127, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 3rem;
+    border: 1px solid rgba(211, 173, 127, 0.3);
+}
+
+.review .box-container .box .food-info .food-thumbnail {
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.review .box-container .box h3 {
-    padding: 1rem 0;
-    font-size: 2rem;
-    color: #fff;
+.review .box-container .box .food-info .food-name {
+    margin-left: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--main-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 12rem;
+}
+
+.review .box-container .box .review-text {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: #ccc;
+    margin: 1.5rem 0;
+    min-height: 8rem;
+    position: relative;
+    z-index: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.review .box-container .box .review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.review .box-container .box .stars {
+    background: rgba(211, 173, 127, 0.1);
+    padding: 0.7rem 1.5rem;
+    border-radius: 2rem;
+    display: inline-flex;
+    align-items: center;
 }
 
 .review .box-container .box .stars i {
-    font-size: 1.5rem;
-    color: var(--main-color);
+    font-size: 1.6rem;
+    color: #ffc107;
+    margin: 0 0.2rem;
+}
+
+.review .box-container .box .review-date {
+    font-size: 1.3rem;
+    color: #aaa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .review .box-container {
+        grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+    }
+    
+    .review .box-container .box .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .review .box-container .box .food-info {
+        margin-top: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .review .box-container .box {
+        padding: 2rem 1.5rem;
+    }
+    
+    .review .box-container .box .user-info .user {
+        height: 5rem;
+        width: 5rem;
+    }
+    
+    .review .box-container .box .food-info .food-thumbnail {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
 }
 
 /* Contact Section */

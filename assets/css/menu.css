@@ -140,6 +140,165 @@ body {
     color: #fff;
 }
 
+/* Custom Sort Box Styles */
+.custom-sort-box {
+    position: relative;
+    width: 250px;
+    user-select: none;
+    font-size: 1.6rem;
+}
+
+.sort-selected {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sort-selected:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sort-selected i:first-child {
+    margin-right: 10px;
+    color: var(--main-color);
+}
+
+.sort-selected span {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+}
+
+.sort-selected i.fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.sort-selected.open i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.sort-options {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    overflow: hidden;
+}
+
+.sort-options.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sort-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sort-option:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sort-option i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+    font-size: 1.4rem;
+    color: #999;
+    transition: all 0.2s ease;
+}
+
+.sort-option span {
+    color: #ddd;
+    transition: all 0.2s ease;
+}
+
+.sort-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sort-option:hover i,
+.sort-option:hover span {
+    color: var(--main-color);
+}
+
+.sort-option.active {
+    background: rgba(var(--main-color-rgb), 0.2);
+}
+
+.sort-option.active i,
+.sort-option.active span {
+    color: var(--main-color);
+}
+
+/* Styling for rating sort options */
+.sort-option[data-value="rating-desc"] i,
+.sort-option[data-value="rating-asc"] i {
+    color: var(--yellow);
+}
+
+.sort-option[data-value="rating-desc"].active,
+.sort-option[data-value="rating-asc"].active {
+    background: rgba(255, 193, 7, 0.15);
+}
+
+/* Animation for option selection */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.sort-option.selecting {
+    animation: pulse 0.3s ease;
+}
+
+/* Animation for rating stars when sorting */
+@keyframes starPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.sort-option[data-value="rating-desc"].selecting i,
+.sort-option[data-value="rating-asc"].selecting i {
+    animation: starPulse 0.5s ease;
+}
+
+/* Active rating sort indicator */
+.sort-selected[data-active-sort="rating-desc"] i:first-child,
+.sort-selected[data-active-sort="rating-asc"] i:first-child {
+    color: var(--yellow);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .custom-sort-box {
+        width: 100%;
+    }
+}
+
 /* Menu Grid */
 .menu-grid {
     display: grid;
@@ -538,4 +697,72 @@ body {
 .filter-btn:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(211, 173, 127, 0.4);
+}
+
+/* Add these animations to your menu.css */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-item.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+/* Loading animation for menu grid */
+.menu-grid.loading {
+    position: relative;
+    min-height: 300px;
+}
+
+.menu-grid.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.menu-grid.loading::before {
+    content: '\f005';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: var(--main-color);
+    z-index: 11;
+    animation: fa-spin 1.5s infinite linear, starPulse 1s infinite alternate;
+}
+
+/* Thêm vào file menu.css */
+@keyframes sortTransition {
+    0% { opacity: 0.7; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.menu-item.sorted {
+    animation: sortTransition 0.5s ease forwards;
+}
+
+/* Thêm nhấp nháy nhẹ cho sao đánh giá khi sắp xếp theo đánh giá */
+.menu-grid[data-sort="rating-desc"] .fas.fa-star,
+.menu-grid[data-sort="rating-asc"] .fas.fa-star {
+    color: var(--yellow);
+    animation: starPulse 1s ease;
 }
