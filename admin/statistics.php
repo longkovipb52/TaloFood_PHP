@@ -32,7 +32,7 @@ try {
     $stmt->execute(['year' => $selectedYear]);
     $monthlyStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Lấy top 5 món ăn bán chạy
+    // Sửa truy vấn lấy top 5 món ăn bán chạy
     $stmt = $conn->prepare("
         SELECT f.food_name, 
                COUNT(*) as order_count,
@@ -41,7 +41,7 @@ try {
         FROM bill_info bi
         JOIN food f ON bi.id_food = f.food_id
         JOIN bill b ON bi.id_bill = b.bill_id
-        WHERE b.status = 'Đã giao'
+        WHERE (b.status = 'Đã giao' OR b.status = 'Đã thanh toán')
         AND YEAR(b.ngaydat) = :year
         GROUP BY f.food_id, f.food_name
         ORDER BY total_quantity DESC
@@ -60,7 +60,7 @@ try {
         JOIN food f ON bi.id_food = f.food_id
         JOIN food_category fc ON f.id_category = fc.foodcategory_id
         JOIN bill b ON bi.id_bill = b.bill_id
-        WHERE b.status = 'Đã giao'
+        WHERE (b.status = 'Đã giao' OR b.status = 'Đã thanh toán')
         AND YEAR(b.ngaydat) = :year
         GROUP BY fc.foodcategory_id, fc.foodcategory_name
         ORDER BY total_revenue DESC
@@ -273,6 +273,9 @@ try {
                                 <h6 class="m-0 font-weight-bold text-primary">Top 5 món ăn bán chạy</h6>
                             </div>
                             <div class="card-body">
+                                <div class="text-muted small mb-2">
+                                    <i class="fas fa-info-circle"></i> Số lượng đã bán bao gồm cả đơn đã giao và đơn đã thanh toán.
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                                         <thead>
@@ -302,6 +305,10 @@ try {
                                 <h6 class="m-0 font-weight-bold text-primary">Thống kê theo danh mục</h6>
                             </div>
                             <div class="card-body">
+                                <!-- Thêm vào sau tiêu đề bảng Top 5 món ăn bán chạy -->
+                            <div class="text-muted small mb-2">
+                                <i class="fas fa-info-circle"></i> Số lượng đã bán bao gồm cả đơn đã giao và đơn đã thanh toán.
+                            </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                                         <thead>

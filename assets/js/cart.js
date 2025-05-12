@@ -47,6 +47,10 @@ function loadCartContents() {
                 // Hide checkout button if cart is empty
                 const checkoutBtn = document.querySelector('.checkout-btn');
                 if (checkoutBtn) checkoutBtn.style.display = 'none';
+                
+                // Hide clear cart button if cart is empty
+                const clearCartBtn = document.querySelector('.clear-cart-btn');
+                if (clearCartBtn) clearCartBtn.style.display = 'none';
             } else {
                 cartItems.innerHTML = data.html;
                 document.querySelector('.cart-count').textContent = data.count;
@@ -57,6 +61,10 @@ function loadCartContents() {
                 // Show checkout button
                 const checkoutBtn = document.querySelector('.checkout-btn');
                 if (checkoutBtn) checkoutBtn.style.display = 'flex';
+                
+                // Show clear cart button if cart has items
+                const clearCartBtn = document.querySelector('.clear-cart-btn');
+                if (clearCartBtn) clearCartBtn.style.display = 'block';
             }
         })
         .catch(error => {

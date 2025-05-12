@@ -119,11 +119,15 @@ $(window).click(function(event) {
 $('#unlockRequestForm').submit(function(e) {
     e.preventDefault();
     
-    const formData = {
-        username: $('#unlockUsername').val(),
-        email: $('#unlockEmail').val(),
-        reason: $('#unlockReason').val() || 'Không có lý do cụ thể'
-    };
+    const username = $('#unlockUsername').val();
+    const email = $('#unlockEmail').val();
+    const reason = $('#unlockReason').val().trim();
+    
+    // Kiểm tra trường lý do
+    if (!reason) {
+        Toast.error('Vui lòng nhập lý do yêu cầu mở khóa!');
+        return;
+    }
     
     // Hiển thị loading
     const submitBtn = $('.unlock-submit-btn');
@@ -133,27 +137,27 @@ $('#unlockRequestForm').submit(function(e) {
     $.ajax({
         url: 'ajax/request_unlock.php',
         type: 'POST',
-        data: formData,
+        dataType: 'json', // Thêm dataType: 'json' để xử lý response JSON tốt hơn
+        data: {
+            username: username,
+            email: email,
+            reason: reason
+        },
         success: function(response) {
-            try {
-                const data = JSON.parse(response);
-                if (data.success) {
-                    Toast.success(data.message);
-                    $('#unlockRequestModal').css('display', 'none');
-                    
-                    // Thay đổi nút yêu cầu mở khóa thành thông báo đã gửi
-                    $('#requestUnlockBtn').text('Đã gửi yêu cầu mở khóa! Vui lòng kiểm tra email của bạn').prop('disabled', true)
-                        .css('background-color', '#28a745');
-                } else {
-                    Toast.error(data.message);
-                }
-            } catch (error) {
-                Toast.error('Có lỗi xảy ra khi gửi yêu cầu!');
+            if (response.success) {
+                Toast.success(response.message);
+                $('#unlockRequestModal').css('display', 'none');
+                
+                // Thay đổi nút yêu cầu mở khóa thành thông báo đã gửi
+                $('#requestUnlockBtn').text('Đã gửi yêu cầu mở khóa! Vui lòng kiểm tra email của bạn').prop('disabled', true)
+                    .css('background-color', '#28a745');
+            } else {
+                Toast.error(response.message);
             }
             submitBtn.text(originalText).prop('disabled', false);
         },
         error: function() {
-            Toast.error('Không thể kết nối đến máy chủ!');
+            Toast.error('Có lỗi khi gửi yêu cầu!');
             submitBtn.text(originalText).prop('disabled', false);
         }
     });

@@ -631,10 +631,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         });
 
-        // Preview image before upload
+        // Thêm kiểm tra khi người dùng chọn file
         $('#profile-image').change(function() {
             const file = this.files[0];
             if (file) {
+                // Kiểm tra định dạng file
+                const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+                if (!validImageTypes.includes(file.type)) {
+                    Toast.error('Vui lòng chọn file ảnh có định dạng JPG, JPEG, PNG hoặc GIF');
+                    // Reset input file
+                    $(this).val('');
+                    return;
+                }
+                
+                // Kiểm tra kích thước file (tối đa 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    Toast.error('Kích thước file không được vượt quá 2MB');
+                    // Reset input file
+                    $(this).val('');
+                    return;
+                }
+                
+                // Nếu file hợp lệ, hiển thị preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     $('#preview-image').attr('src', e.target.result);
@@ -647,23 +665,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $('#registerForm').on('submit', function(e) {
             e.preventDefault();
             
-            // Validate password match
+            // Kiểm tra mật khẩu xác nhận
             if ($('#password').val() !== $('#confirmPassword').val()) {
                 Toast.error('Mật khẩu xác nhận không khớp!');
                 return;
             }
 
-            // Validate password length
+            // Kiểm tra độ dài mật khẩu
             if ($('#password').val().length < 6) {
                 Toast.error('Mật khẩu phải có ít nhất 6 ký tự!');
                 return;
             }
-
-            // Store form data
-            formData = new FormData(this);
             
-            // Move to next step
-            nextStep(1);
+            // Kiểm tra định dạng số điện thoại (đơn giản cho số điện thoại Việt Nam)
+            const phoneRegex = /^(0[1-9][0-9]{8}|84[1-9][0-9]{8})$/;
+            if (!phoneRegex.test($('#phone').val())) {
+                Toast.error('Số điện thoại không hợp lệ!');
+                return;
+            }
+
+            // Kiểm tra trùng lặp trước khi chuyển sang bước tiếp theo
+            $.ajax({
+                url: 'ajax/register.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    username: $('#username').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    check_only: 'true'  // Đánh dấu chỉ kiểm tra không đăng ký
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Lưu trữ dữ liệu biểu mẫu và chuyển sang bước tiếp theo
+                        formData = new FormData($('#registerForm')[0]);
+                        nextStep(1);
+                    } else {
+                        Toast.error(response.message);
+                    }
+                },
+                error: function() {
+                    Toast.error('Có lỗi khi kiểm tra thông tin!');
+                }
+            });
         });
 
         $('#imageForm').on('submit', function(e) {
@@ -671,7 +715,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             const fileInput = $('#profile-image')[0];
             if (fileInput.files.length > 0) {
-                formData.append('profile_image', fileInput.files[0]);
+                const file = fileInput.files[0];
+                // Kiểm tra lại định dạng file trước khi submit
+                const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+                if (!validImageTypes.includes(file.type)) {
+                    Toast.error('Vui lòng chọn file ảnh có định dạng JPG, JPEG, PNG hoặc GIF');
+                    return;
+                }
+                
+                // Kiểm tra kích thước file
+                if (file.size > 2 * 1024 * 1024) {
+                    Toast.error('Kích thước file không được vượt quá 2MB');
+                    return;
+                }
+                
+                formData.append('profile_image', file);
             }
 
             // Send OTP

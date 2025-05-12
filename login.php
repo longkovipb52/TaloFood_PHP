@@ -164,7 +164,7 @@
                 <div class="field">
                     <div class="input-field">
                         <label for="unlockReason">Lý do yêu cầu mở khóa</label>
-                        <textarea id="unlockReason" name="reason" rows="3" placeholder="Giải thích lý do tài khoản bị khóa và tại sao bạn muốn mở khóa"></textarea>
+                        <textarea id="unlockReason" name="reason" rows="3" placeholder="Giải thích lý do tài khoản bị khóa và tại sao bạn muốn mở khóa" required></textarea>
                     </div>
                 </div>
                 

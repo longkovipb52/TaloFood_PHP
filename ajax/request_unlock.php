@@ -14,11 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Lấy dữ liệu từ request
 $username = trim($_POST['username'] ?? '');
-$reason = trim($_POST['reason'] ?? 'Không có lý do');
+$reason = trim($_POST['reason'] ?? '');
 $email = trim($_POST['email'] ?? '');
 
 // Kiểm tra dữ liệu cơ bản
-if (empty($username) || empty($email)) {
+if (empty($username) || empty($email) || empty($reason)) {
     echo json_encode([
         'success' => false,
         'message' => 'Vui lòng nhập đầy đủ thông tin!'
@@ -50,9 +50,18 @@ try {
         ]);
         exit;
     }
+    
+    // Kiểm tra email có khớp với email đăng ký không
+    if ($user['email'] !== $email) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Email không khớp với email đã đăng ký cho tài khoản này!'
+        ]);
+        exit;
+    }
 
     // Kiểm tra tài khoản có bị khóa không
-    if ($user['status'] != 0) {
+    if ($user['locked_until'] === null && $user['status'] == 1) {
         echo json_encode([
             'success' => false,
             'message' => 'Tài khoản này không bị khóa!'

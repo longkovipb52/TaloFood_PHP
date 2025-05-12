@@ -10,31 +10,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Lấy dữ liệu từ form
     $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirmPassword'];
-    $address = trim($_POST['address']);
-    $profile_image = null;
-
-    // Kiểm tra mật khẩu xác nhận
-    if ($password !== $confirm_password) {
-        $response['message'] = 'Mật khẩu xác nhận không khớp!';
-        echo json_encode($response);
-        exit;
-    }
-
-    // Kiểm tra độ dài mật khẩu
-    if (strlen($password) < 6) {
-        $response['message'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
-        echo json_encode($response);
-        exit;
-    }
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+    
+    // Kiểm tra xem đây là yêu cầu chỉ kiểm tra hay thực sự đăng ký
+    $check_only = isset($_POST['check_only']) && $_POST['check_only'] === 'true';
 
     try {
         // Kiểm tra username đã tồn tại chưa
         $stmt = $conn->prepare("SELECT account_id FROM Account WHERE username = ?");
-        $stmt->execute([$username]);
+        $stmt-> execute([$username]);
         if ($stmt->rowCount() > 0) {
             $response['message'] = 'Tên đăng nhập đã tồn tại!';
             echo json_encode($response);
@@ -42,10 +27,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Kiểm tra email đã tồn tại chưa
-        $stmt = $conn->prepare("SELECT account_id FROM Account WHERE email = ?");
-        $stmt->execute([$email]);
-        if ($stmt->rowCount() > 0) {
-            $response['message'] = 'Email đã được sử dụng!';
+        if (!empty($email)) {
+            $stmt = $conn->prepare("SELECT account_id FROM Account WHERE email = ?");
+            $stmt->execute([$email]);
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = 'Email đã được sử dụng!';
+                echo json_encode($response);
+                exit;
+            }
+        }
+
+        // Kiểm tra số điện thoại đã tồn tại chưa
+        if (!empty($phone)) {
+            $stmt = $conn->prepare("SELECT account_id FROM Account WHERE phone = ?");
+            $stmt->execute([$phone]);
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = 'Số điện thoại đã được sử dụng!';
+                echo json_encode($response);
+                exit;
+            }
+        }
+
+        // Nếu chỉ kiểm tra thì trả về thành công và dừng
+        if ($check_only) {
+            $response['success'] = true;
+            $response['message'] = 'Thông tin hợp lệ';
+            echo json_encode($response);
+            exit;
+        }
+
+        // Từ đây xuống chỉ chạy nếu đăng ký thật sự (không phải check_only)
+        $password = $_POST['password'];
+        $confirm_password = $_POST['confirmPassword'];
+        $address = isset($_POST['address']) ? trim($_POST['address']) : '';
+        $profile_image = null;
+        
+        // Kiểm tra mật khẩu xác nhận
+        if ($password !== $confirm_password) {
+            $response['message'] = 'Mật khẩu xác nhận không khớp!';
+            echo json_encode($response);
+            exit;
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (strlen($password) < 6) {
+            $response['message'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
             echo json_encode($response);
             exit;
         }

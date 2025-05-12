@@ -33,16 +33,10 @@ if ($reputation_points >= 70) {
 } elseif ($reputation_points >= 10) {
     $reputation_status = 'danger';
     $forced_payment = true;
-} else {
+} elseif ($reputation_points < 10) {
     $reputation_status = 'locked';
     $account_locked = true;
-}
-
-// Nếu tài khoản bị khóa, chuyển hướng
-if ($account_locked) {
-    $_SESSION['error'] = 'Tài khoản của bạn đã bị khóa tính năng đặt hàng do điểm uy tín quá thấp. Vui lòng liên hệ với nhân viên hỗ trợ.';
-    header('Location: index.php');
-    exit();
+    // Không chuyển hướng nữa, thay vào đó sẽ hiển thị thông báo trên trang
 }
 
 // Kiểm tra giỏ hàng
@@ -237,6 +231,15 @@ foreach ($_SESSION['cart'] as $food_id => $cart_item) {
                         <p>Bạn chỉ có thể đặt hàng khi thanh toán trước.</p>
                     </div>
                 </div>
+                <?php elseif ($reputation_status === 'locked'): ?>
+                <div class="reputation-locked">
+                    <i class="fas fa-ban"></i>
+                    <div>
+                        <p><strong>Tài khoản bị hạn chế:</strong> Điểm uy tín của bạn quá thấp (<?php echo $reputation_points; ?> điểm).</p>
+                        <p>Bạn không thể đặt hàng cho đến khi điểm uy tín đạt tối thiểu 10 điểm.</p>
+                        <p>Vui lòng liên hệ với nhân viên hỗ trợ để được giúp đỡ.</p>
+                    </div>
+                </div>
                 <?php endif; ?>
 
                 <form method="POST">
@@ -260,7 +263,25 @@ foreach ($_SESSION['cart'] as $food_id => $cart_item) {
                         </div>
                     </div>
 
-                    <?php if ($forced_payment): ?>
+                    <?php if ($account_locked): ?>
+                    <div class="form-group">
+                        <h3>Phương thức thanh toán</h3>
+                        <div class="payment-methods">
+                            <label class="payment-method disabled">
+                                <input type="radio" name="payment_method" value="cod" disabled>
+                                <img src="image/cod.png" alt="COD">
+                                <span>Thanh toán khi nhận hàng (COD) <i class="fas fa-lock"></i></span>
+                                <div class="payment-disabled-msg">Không khả dụng do điểm uy tín quá thấp</div>
+                            </label>
+                            <label class="payment-method disabled">
+                                <input type="radio" name="payment_method" value="paypal" disabled>
+                                <img src="image/paypal.png" alt="PayPal">
+                                <span>PayPal <i class="fas fa-lock"></i></span>
+                                <div class="payment-disabled-msg">Không khả dụng do điểm uy tín quá thấp</div>
+                            </label>
+                        </div>
+                    </div>
+                    <?php elseif ($forced_payment): ?>
                     <div class="form-group">
                         <h3>Phương thức thanh toán</h3>
                         <div class="payment-methods">
@@ -296,7 +317,12 @@ foreach ($_SESSION['cart'] as $food_id => $cart_item) {
                     <?php endif; ?>
 
                     <input type="hidden" name="total_amount" value="<?php echo $total_amount; ?>">
-                    <button type="submit" class="checkout-btn">Xác nhận đặt hàng</button>
+                    <?php if ($account_locked): ?>
+                        <button type="button" class="checkout-btn disabled" disabled>Tài khoản bị hạn chế đặt hàng</button>
+                        <a href="contact.php" class="support-link">Liên hệ hỗ trợ</a>
+                    <?php else: ?>
+                        <button type="submit" class="checkout-btn">Xác nhận đặt hàng</button>
+                    <?php endif; ?>
                 </form>
             </div>
 

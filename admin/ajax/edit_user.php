@@ -88,6 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        // Xử lý điểm uy tín
+        $reputation_points = isset($_POST['reputation_points']) ? intval($_POST['reputation_points']) : null;
+
+        // Xử lý reset đăng nhập sai
+        $resetLoginAttempts = isset($_POST['reset_login_attempts']) && $_POST['reset_login_attempts'] === 'on';
+        $resetLoginQuery = '';
+        $resetLoginParams = [];
+
+        if ($resetLoginAttempts) {
+            $resetLoginQuery = ", login_attempts = 0, locked_until = NULL";
+        }
+
         // Cập nhật thông tin người dùng
         $stmt = $conn->prepare("
             UPDATE account 
@@ -96,19 +108,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 phone = ?, 
                 address = ?, 
                 id_role = ?,
-                profile_image = ?
+                profile_image = ?,
+                reputation_points = ?
+                $resetLoginQuery
             WHERE account_id = ?
         ");
         
-        $success = $stmt->execute([
+        // Thêm reputation_points vào mảng tham số
+        $params = [
             $_POST['username'],
             $_POST['email'],
             $_POST['phone'] ?? '',
             $_POST['address'] ?? '',
             $_POST['role'],
             $profile_image,
+            $reputation_points,
             $_POST['account_id']
-        ]);
+        ];
+
+        $success = $stmt->execute($params);
 
         if ($success) {
             echo json_encode([
@@ -132,4 +150,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'success' => false,
         'message' => 'Phương thức không được hỗ trợ'
     ]);
-} 
+}

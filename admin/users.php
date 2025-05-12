@@ -327,6 +327,14 @@ try {
                                 <option value="1">Admin</option>
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Điểm uy tín</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="reputation_points" id="edit_reputation" min="0" max="100" required>
+                                <span class="input-group-text">điểm</span>
+                            </div>
+                            <small class="text-muted">Dưới 10 điểm: Không thể đặt hàng | 10-39 điểm: Chỉ được thanh toán trực tuyến | 40+ điểm: Tất cả phương thức</small>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -615,4 +623,4 @@ try {
         }
     </script>
 </body>
-</html> 
+</html>
